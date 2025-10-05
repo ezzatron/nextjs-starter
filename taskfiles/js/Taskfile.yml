@@ -9,5 +9,6 @@ includes:
 
 tasks:
   install-deps:
+    internal: true
     desc: Install JavaScript dependencies
     deps: [npm:install]

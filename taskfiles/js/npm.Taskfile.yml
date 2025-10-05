@@ -3,12 +3,14 @@ version: "3"
 
 tasks:
   init:
+    internal: true
     desc: Initialize NPM
     status:
       - test -f package.json
     cmd: jq --null-input --argjson private true --arg type module '$ARGS.named' > package.json
 
   lock:
+    internal: true
     desc: Lock NPM dependencies
     deps: [init]
     status:
@@ -16,6 +18,7 @@ tasks:
     cmd: npm install --package-lock-only
 
   install:
+    internal: true
     desc: Install NPM dependencies
     deps: [lock]
     sources:

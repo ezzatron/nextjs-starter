@@ -3,11 +3,13 @@ version: "3"
 
 tasks:
   check:
+    internal: true
     desc: Check linting with ESLint
     deps: [":js:install-deps"]
     cmd: $JS_EXEC eslint
 
   no-warnings:
+    internal: true
     desc: Check linting with ESLint
     deps: [":js:install-deps"]
     cmd: $JS_EXEC eslint --max-warnings=0

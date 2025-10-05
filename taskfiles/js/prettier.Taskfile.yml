@@ -3,11 +3,13 @@ version: "3"
 
 tasks:
   check:
+    internal: true
     desc: Check formatting with Prettier
     deps: [":js:install-deps"]
     cmd: $JS_EXEC prettier --check .
 
   write:
+    internal: true
     desc: Automatically fix formatting with Prettier
     deps: [":js:install-deps"]
     cmd: $JS_EXEC prettier --write .
