@@ -1,0 +1,12 @@
+version: "3"
+
+env:
+  JS_EXEC: npm exec --
+
+includes:
+  npm: ./npm.Taskfile.yml
+
+tasks:
+  install-deps:
+    desc: Install JavaScript dependencies
+    deps: [npm:install]

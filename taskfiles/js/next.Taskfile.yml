@@ -1,0 +1,24 @@
+version: "3"
+
+tasks:
+  run:
+    desc: Run the Next.js app in development mode
+    deps: [":js:install-deps"]
+    cmd: $JS_EXEC next dev --turbopack
+
+  build:
+    desc: Build the Next.js app for production
+    deps: [":js:install-deps"]
+    sources:
+      - next.config.*
+      - tsconfig.json
+      - public/**
+      - src/**
+    generates:
+      - .next/**
+    cmd: $JS_EXEC next build --turbopack
+
+  start:
+    desc: Start the Next.js production server
+    deps: [":js:install-deps", build]
+    cmd: $JS_EXEC next start

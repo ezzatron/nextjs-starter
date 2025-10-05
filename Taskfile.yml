@@ -1,0 +1,31 @@
+version: "3"
+
+includes:
+  biome: ./taskfiles/js/biome.Taskfile.yml
+  js: ./taskfiles/js
+  next: ./taskfiles/js/next.Taskfile.yml
+  tsc: ./taskfiles/js/tsc.Taskfile.yml
+
+tasks:
+  install-deps:
+    desc: Install dependencies
+    aliases: [install, i]
+    deps: [js:install-deps]
+
+  run-dev:
+    desc: Run the app in development mode
+    aliases: [run, dev]
+    deps: [next:run]
+
+  run-prod:
+    desc: Run the app in production mode
+    aliases: [start, prod]
+    deps: [next:start]
+
+  lint:
+    desc: Lint the codebase
+    deps: [biome:check:write, tsc:typecheck]
+
+  precommit:
+    desc: Run all pre-commit checks
+    deps: [lint]
