@@ -9,7 +9,7 @@ const compat = new FlatCompat({
 
 /** @type {import("eslint").Linter.Config[]} */
 const config = [
-  { ignores: [".next", "next-env.d.ts"] },
+  { ignores: ["out", "next-env.d.ts"] },
   ...compat.config({
     extends: [
       "eslint:recommended",

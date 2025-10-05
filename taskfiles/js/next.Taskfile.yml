@@ -18,11 +18,11 @@ tasks:
       - public/**
       - src/**
     generates:
-      - .next/**
+      - out/next/**
     cmd: $JS_EXEC next build --turbopack
 
   start:
     internal: true
     desc: Start the Next.js production server
     deps: [":js:install-deps", build]
-    cmd: $JS_EXEC next start
+    cmd: node out/next/standalone/server.js

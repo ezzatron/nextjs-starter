@@ -1,6 +1,6 @@
-/.next/
 /.task/
 /node_modules/
+/out/
 
 /next-env.d.ts
 /tsconfig.tsbuildinfo

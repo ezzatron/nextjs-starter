@@ -2,4 +2,4 @@
 
 import "next";
 import "next/image-types/global";
-import "./.next/types/routes";
+import "./out/next/types/routes";
