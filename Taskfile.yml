@@ -1,31 +1,40 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
 includes:
-  biome: ./taskfiles/js/biome.Taskfile.yml
+  eslint: ./taskfiles/js/eslint.Taskfile.yml
   js: ./taskfiles/js
   next: ./taskfiles/js/next.Taskfile.yml
+  prettier: ./taskfiles/js/prettier.Taskfile.yml
   tsc: ./taskfiles/js/tsc.Taskfile.yml
 
 tasks:
   install-deps:
     desc: Install dependencies
     aliases: [install, i]
-    deps: [js:install-deps]
+    cmds:
+      - task: js:install-deps
 
   run-dev:
     desc: Run the app in development mode
     aliases: [run, dev]
-    deps: [next:run]
+    cmds:
+      - task: next:run
 
   run-prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    deps: [next:start]
+    cmds:
+      - task: next:start
 
   lint:
-    desc: Lint the codebase
-    deps: [biome:check:write, tsc:typecheck]
+    desc: Run formatting, linting, and type checking
+    cmds:
+      - task: prettier:write
+      - task: eslint:check
+      - task: tsc:typecheck
 
   precommit:
     desc: Run all pre-commit checks
-    deps: [lint]
+    cmds:
+      - task: lint

@@ -2,7 +2,7 @@
 version: "3"
 
 tasks:
-  typecheck:
-    desc: Check types with TypeScript
+  check:
+    desc: Check linting with ESLint
     deps: [":js:install-deps"]
-    cmd: $JS_EXEC tsc --noEmit
+    cmd: $JS_EXEC eslint
