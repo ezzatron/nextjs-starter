@@ -36,5 +36,16 @@ tasks:
 
   precommit:
     desc: Run all pre-commit checks
+    aliases: [pc]
     cmds:
-      - task: lint
+      - task: prettier:check
+      - task: eslint:no-warnings
+      - task: tsc:typecheck
+
+  ci:
+    desc: Run all continuous integration checks
+    cmds:
+      - task: prettier:check
+      - task: eslint:no-warnings
+      - task: tsc:typecheck
+      - task: next:build
