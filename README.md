@@ -19,6 +19,7 @@ task --list
 ## TODO
 
 - [ ] Move Next.js standalone build
+- [ ] Next.js CI build caching
 - [ ] Use vars for JS_EXEC
 - [ ] Austenite
 - [ ] Vitest
