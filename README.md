@@ -15,3 +15,13 @@ See all available tasks with:
 ```sh
 task --list
 ```
+
+## TODO
+
+- [ ] Vitest
+- [ ] Playwright
+- [ ] Storybook
+- [ ] Chromatic
+- [ ] Demo content
+- [ ] WorkOS
+- [ ] Hosting
