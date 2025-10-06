@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  distDir: "out/next",
+  distDir: "out/next/dist",
   output: "standalone",
 };
 

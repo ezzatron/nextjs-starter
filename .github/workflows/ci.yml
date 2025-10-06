@@ -49,7 +49,7 @@ jobs:
         with:
           path: |
             ~/.npm
-            ${{ github.workspace }}/out/next/cache
+            ${{ github.workspace }}/out/next/dist/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('next.config.*', 'tsconfig.json', 'public/**', 'src/**') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-

@@ -1,9 +1,6 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  JS_NEXT_STANDALONE_DIR: out/dist
-
 tasks:
   run:
     internal: true
@@ -21,35 +18,35 @@ tasks:
       - public/**
       - src/**
     generates:
-      - out/next/**
+      - out/next/dist/**
     cmd: "{{.JS_EXEC}} next build --turbopack"
 
   build:standalone:
     desc: Build the Next.js app for production in standalone mode
     deps: [build]
     preconditions:
-      - sh: test -d out/next/standalone
+      - sh: test -d out/next/dist/standalone
         msg: Standalone output not detected, please enable it in Next.js config
     sources:
-      - out/next/standalone/**
+      - out/next/dist/standalone/**
     generates:
-      - "{{.JS_NEXT_STANDALONE_DIR}}/**"
+      - out/next/standalone/**
     cmds:
-      - "rm -rf {{.JS_NEXT_STANDALONE_DIR}}"
-      - "cp -a out/next/standalone {{.JS_NEXT_STANDALONE_DIR}}"
-      - "mkdir -p {{.JS_NEXT_STANDALONE_DIR}}/out/next"
-      - "cp -a out/next/cache {{.JS_NEXT_STANDALONE_DIR}}/out/next/cache"
-      - "cp -a out/next/static {{.JS_NEXT_STANDALONE_DIR}}/out/next/static"
-      - "cp -a public {{.JS_NEXT_STANDALONE_DIR}}/"
-      - "jq --null-input --arg type commonjs '$ARGS.named' > {{.JS_NEXT_STANDALONE_DIR}}/package.json"
+      - rm -rf out/next/standalone
+      - cp -a out/next/dist/standalone out/next/standalone
+      - mkdir -p out/next/standalone/out/next/dist
+      - cp -a out/next/dist/cache out/next/standalone/out/next/dist/cache
+      - cp -a out/next/dist/static out/next/standalone/out/next/dist/static
+      - cp -a public out/next/standalone/
+      - jq --null-input --arg type commonjs '$ARGS.named' > out/next/standalone/package.json
 
   start:
     internal: true
     desc: Start the Next.js production server
-    deps: [":js:install-deps", build]
+    deps: [build]
     cmd: "{{.JS_EXEC}} next start"
 
   start:standalone:
     desc: Start the Next.js production server in standalone mode
-    deps: [":js:install-deps", build:standalone]
-    cmd: "node {{.JS_NEXT_STANDALONE_DIR}}/server.js"
+    deps: [build:standalone]
+    cmd: "node out/next/standalone/server.js"
