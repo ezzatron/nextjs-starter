@@ -28,8 +28,8 @@ tasks:
   run-prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    deps: [build]
-    cmd: node out/dist/server.js
+    cmds:
+      - task: next:start:standalone
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -40,19 +40,8 @@ tasks:
 
   build:
     desc: Build the app for production
-    deps: [next:build]
-    sources:
-      - out/next/standalone/**
-    generates:
-      - out/dist/**
     cmds:
-      - rm -rf out/dist
-      - cp -a out/next/standalone out/dist
-      - mkdir -p out/dist/out/next
-      - cp -a out/next/cache out/dist/out/next/cache
-      - cp -a out/next/static out/dist/out/next/static
-      - cp -a public out/dist/
-      - jq --null-input --arg type commonjs '$ARGS.named' > out/dist/package.json
+      - task: next:build:standalone
 
   image:
     desc: Build the container image

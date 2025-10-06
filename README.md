@@ -18,7 +18,6 @@ task --list
 
 ## TODO
 
-- [ ] Move Next.js standalone build
 - [ ] Austenite
 - [ ] Vitest
 - [ ] Playwright

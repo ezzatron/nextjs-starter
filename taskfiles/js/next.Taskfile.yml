@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  JS_NEXT_STANDALONE_DIR: out/dist
+
 tasks:
   run:
     internal: true
@@ -21,8 +24,32 @@ tasks:
       - out/next/**
     cmd: "{{.JS_EXEC}} next build --turbopack"
 
+  build:standalone:
+    desc: Build the Next.js app for production in standalone mode
+    deps: [build]
+    preconditions:
+      - sh: test -d out/next/standalone
+        msg: Standalone output not detected, please enable it in Next.js config
+    sources:
+      - out/next/standalone/**
+    generates:
+      - "{{.JS_NEXT_STANDALONE_DIR}}/**"
+    cmds:
+      - "rm -rf {{.JS_NEXT_STANDALONE_DIR}}"
+      - "cp -a out/next/standalone {{.JS_NEXT_STANDALONE_DIR}}"
+      - "mkdir -p {{.JS_NEXT_STANDALONE_DIR}}/out/next"
+      - "cp -a out/next/cache {{.JS_NEXT_STANDALONE_DIR}}/out/next/cache"
+      - "cp -a out/next/static {{.JS_NEXT_STANDALONE_DIR}}/out/next/static"
+      - "cp -a public {{.JS_NEXT_STANDALONE_DIR}}/"
+      - "jq --null-input --arg type commonjs '$ARGS.named' > {{.JS_NEXT_STANDALONE_DIR}}/package.json"
+
   start:
     internal: true
     desc: Start the Next.js production server
     deps: [":js:install-deps", build]
     cmd: "{{.JS_EXEC}} next start"
+
+  start:standalone:
+    desc: Start the Next.js production server in standalone mode
+    deps: [":js:install-deps", build:standalone]
+    cmd: "node {{.JS_NEXT_STANDALONE_DIR}}/server.js"
