@@ -1,7 +1,11 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  IMAGE_NAME: fixme
+
 includes:
+  docker: ./taskfiles/docker
   eslint: ./taskfiles/js/eslint.Taskfile.yml
   js: ./taskfiles/js
   next: ./taskfiles/js/next.Taskfile.yml
@@ -50,6 +54,13 @@ tasks:
       - cp -a public out/dist/
       - jq --null-input --arg type commonjs '$ARGS.named' > out/dist/package.json
 
+  image:
+    desc: Build the container image
+    aliases: [docker]
+    deps: [build]
+    cmds:
+      - task: docker:build
+
   precommit:
     desc: Run all pre-commit checks
     aliases: [pc]
@@ -58,6 +69,7 @@ tasks:
       - task: eslint:no-warnings
       - task: tsc:typecheck
       - task: build
+      - task: docker:build
 
   ci:
     desc: Run all continuous integration checks
@@ -66,3 +78,4 @@ tasks:
       - task: eslint:no-warnings
       - task: tsc:typecheck
       - task: build
+      - task: docker:build
