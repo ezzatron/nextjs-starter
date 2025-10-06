@@ -6,7 +6,7 @@ tasks:
     internal: true
     desc: Run the Next.js app in development mode
     deps: [":js:install-deps"]
-    cmd: $JS_EXEC next dev --turbopack
+    cmd: "{{.JS_EXEC}} next dev --turbopack"
 
   build:
     internal: true
@@ -19,10 +19,10 @@ tasks:
       - src/**
     generates:
       - out/next/**
-    cmd: $JS_EXEC next build --turbopack
+    cmd: "{{.JS_EXEC}} next build --turbopack"
 
   start:
     internal: true
     desc: Start the Next.js production server
     deps: [":js:install-deps", build]
-    cmd: $JS_EXEC next start
+    cmd: "{{.JS_EXEC}} next start"

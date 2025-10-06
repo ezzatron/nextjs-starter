@@ -19,7 +19,6 @@ task --list
 ## TODO
 
 - [ ] Move Next.js standalone build
-- [ ] Use vars for JS_EXEC
 - [ ] Austenite
 - [ ] Vitest
 - [ ] Playwright

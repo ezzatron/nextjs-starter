@@ -6,10 +6,10 @@ tasks:
     internal: true
     desc: Check formatting, linting, and imports with Biome
     deps: [":js:install-deps"]
-    cmd: $JS_EXEC biome check
+    cmd: "{{.JS_EXEC}} biome check"
 
   write:
     internal: true
     desc: Automatically fix formatting, linting, and imports with Biome
     deps: [":js:install-deps"]
-    cmd: $JS_EXEC biome check --write
+    cmd: "{{.JS_EXEC}} biome check --write"

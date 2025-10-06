@@ -6,4 +6,4 @@ tasks:
     internal: true
     desc: Check types with TypeScript
     deps: [":js:install-deps"]
-    cmd: $JS_EXEC tsc --noEmit
+    cmd: "{{.JS_EXEC}} tsc --noEmit"
