@@ -74,8 +74,8 @@ tasks:
   ci:
     desc: Run all continuous integration checks
     cmds:
+      - task: build
+      - task: docker:build
       - task: prettier:check
       - task: eslint:no-warnings
       - task: tsc:typecheck
-      - task: build
-      - task: docker:build
