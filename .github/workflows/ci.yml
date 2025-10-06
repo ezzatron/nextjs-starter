@@ -37,7 +37,7 @@ jobs:
           fi
 
       - name: Cache Playwright
-        if: steps.platforms.outputs.nodejs == 'true' && steps.detect-playwright.outputs.version != ''
+        if: steps.detect-playwright.outputs.version != ''
         uses: actions/cache@v4
         id: playwright-cache
         with:
