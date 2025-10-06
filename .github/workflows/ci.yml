@@ -44,6 +44,16 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.detect-playwright.outputs.version }}-${{ runner.os }}-${{ runner.arch }}
 
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/out/next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('next.config.*', 'tsconfig.json', 'public/**', 'src/**') }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+
       - name: Test, build, and lint
         run: task ci
 
