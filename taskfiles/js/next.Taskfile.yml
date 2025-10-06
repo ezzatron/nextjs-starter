@@ -25,4 +25,4 @@ tasks:
     internal: true
     desc: Start the Next.js production server
     deps: [":js:install-deps", build]
-    cmd: node out/next/standalone/server.js
+    cmd: $JS_EXEC next start

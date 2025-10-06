@@ -24,8 +24,8 @@ tasks:
   run-prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    cmds:
-      - task: next:start
+    deps: [build]
+    cmd: node out/dist/server.js
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -34,13 +34,30 @@ tasks:
       - task: eslint:check
       - task: tsc:typecheck
 
+  build:
+    desc: Build the app for production
+    deps: [next:build]
+    sources:
+      - out/next/standalone/**
+    generates:
+      - out/dist/**
+    cmds:
+      - rm -rf out/dist
+      - cp -a out/next/standalone out/dist
+      - mkdir -p out/dist/out/next
+      - cp -a out/next/cache out/dist/out/next/cache
+      - cp -a out/next/static out/dist/out/next/static
+      - cp -a public out/dist/
+      - jq --null-input --arg type commonjs '$ARGS.named' > out/dist/package.json
+
   precommit:
     desc: Run all pre-commit checks
     aliases: [pc]
     cmds:
-      - task: prettier:check
+      - task: prettier:write
       - task: eslint:no-warnings
       - task: tsc:typecheck
+      - task: build
 
   ci:
     desc: Run all continuous integration checks
@@ -48,4 +65,4 @@ tasks:
       - task: prettier:check
       - task: eslint:no-warnings
       - task: tsc:typecheck
-      - task: next:build
+      - task: build
