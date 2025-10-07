@@ -17,21 +17,27 @@ includes:
 tasks:
   install-deps:
     desc: Install dependencies
-    aliases: [install, i]
+    aliases: [install, i, deps]
     cmds:
       - task: js:install-deps
 
-  run-dev:
+  run:dev:
     desc: Run the app in development mode
     aliases: [run, dev]
     cmds:
       - task: next:run
 
-  run-prod:
+  run:prod:
     desc: Run the app in production mode
     aliases: [start, prod]
     deps: [build]
     cmd: node out/dist/run.mjs
+
+  run:container:
+    desc: Run the app in a container
+    deps: [image]
+    cmds:
+      - docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
 
   lint:
     desc: Run formatting, linting, and type checking

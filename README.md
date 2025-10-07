@@ -18,7 +18,6 @@ task --list
 
 ## TODO
 
-- [ ] run:container target
 - [ ] Vitest
 - [ ] Playwright
 - [ ] Storybook
