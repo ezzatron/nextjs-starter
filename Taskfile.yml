@@ -94,6 +94,12 @@ tasks:
     cmds:
       - task: docker:build
 
+  image:push:
+    desc: Build the container image and push it to the registry
+    deps: [build]
+    cmds:
+      - task: docker:push
+
   precommit:
     desc: Run all pre-commit checks
     aliases: [pc]
