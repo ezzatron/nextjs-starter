@@ -18,7 +18,6 @@ task --list
 
 ## TODO
 
-- [ ] Check generated files
 - [ ] run:container target
 - [ ] Vitest
 - [ ] Playwright

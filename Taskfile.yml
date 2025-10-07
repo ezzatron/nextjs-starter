@@ -3,6 +3,7 @@ version: "3"
 
 vars:
   APP_NAME: FIXME
+  GENERATED_FILES: ENVIRONMENT.md
   IMAGE_NAME: fixme
 
 includes:
@@ -53,6 +54,21 @@ tasks:
       AUSTENITE_APP: "{{.APP_NAME}}"
     cmd: node --experimental-strip-types src/run.ts > ENVIRONMENT.md
 
+  regenerate:
+    desc: Regenerate all generated files
+    cmds:
+      - rm -rf {{.GENERATED_FILES}}
+      - task: docs:environment
+
+  regenerate:check:
+    internal: true
+    desc: Check if all generated files are up to date
+    deps: [regenerate]
+    preconditions:
+      - sh: git diff --exit-code -- {{.GENERATED_FILES}}
+        msg: Generated files are out of date
+    cmd: echo All generated files are up to date
+
   build:
     desc: Build the app for production
     deps: [next:build:standalone]
@@ -76,16 +92,17 @@ tasks:
     desc: Run all pre-commit checks
     aliases: [pc]
     cmds:
+      - task: regenerate:check
       - task: prettier:write
       - task: eslint:no-warnings
       - task: tsc:typecheck
       - task: build
       - task: docker:build
-      - task: docs:environment
 
   ci:
     desc: Run all continuous integration checks
     cmds:
+      - task: regenerate:check
       - task: build
       - task: docker:build
       - task: prettier:check
