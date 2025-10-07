@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "FIXME",
-  description: "FIXME",
+  title: "Next.js starter",
+  description: "A batteries-included starter template for Next.js",
 };
 
 type Props = {

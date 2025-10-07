@@ -1,6 +1,6 @@
 # Environment variables
 
-The `FIXME` app uses **declarative environment variables** powered by
+The `nextjs-starter` app uses **declarative environment variables** powered by
 **[Austenite]**.
 
 [austenite]: https://github.com/ezzatron/austenite

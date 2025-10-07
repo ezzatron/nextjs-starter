@@ -2,9 +2,9 @@
 version: "3"
 
 vars:
-  APP_NAME: FIXME
+  APP_NAME: nextjs-starter
   GENERATED_FILES: ENVIRONMENT.md
-  IMAGE_NAME: fixme
+  IMAGE_NAME: ghcr.io/ezzatron/nextjs-starter
 
 includes:
   docker: ./taskfiles/docker
