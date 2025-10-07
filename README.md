@@ -18,7 +18,8 @@ task --list
 
 ## TODO
 
-- [ ] Austenite
+- [ ] Check generated files
+- [ ] run:container target
 - [ ] Vitest
 - [ ] Playwright
 - [ ] Storybook

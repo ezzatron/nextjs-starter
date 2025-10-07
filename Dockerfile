@@ -8,9 +8,9 @@ ENV NODE_ENV=production
 RUN addgroup --system nodejs
 RUN adduser --system nextjs
 
-COPY --chown=nextjs:nodejs out/next/standalone ./
+COPY --chown=nextjs:nodejs out/dist ./
 
 # Run as non-root user
 USER nextjs
 
-ENTRYPOINT ["node", "server.js"]
+ENTRYPOINT ["node", "run.mjs"]

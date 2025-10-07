@@ -9,6 +9,8 @@
     "@types/node": "^24.6.2",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "austenite": "^0.13.0",
+    "esbuild": "^0.25.10",
     "next": "^15.5.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

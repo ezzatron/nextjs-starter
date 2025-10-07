@@ -22,6 +22,7 @@ tasks:
     cmd: "{{.JS_EXEC}} next build --turbopack"
 
   build:standalone:
+    internal: true
     desc: Build the Next.js app for production in standalone mode
     deps: [build]
     preconditions:
@@ -47,6 +48,7 @@ tasks:
     cmd: "{{.JS_EXEC}} next start"
 
   start:standalone:
+    internal: true
     desc: Start the Next.js production server in standalone mode
     deps: [build:standalone]
     cmd: "node out/next/standalone/server.js"

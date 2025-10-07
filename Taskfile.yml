@@ -2,6 +2,7 @@
 version: "3"
 
 vars:
+  APP_NAME: FIXME
   IMAGE_NAME: fixme
 
 includes:
@@ -28,8 +29,8 @@ tasks:
   run-prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    cmds:
-      - task: next:start:standalone
+    deps: [build]
+    cmd: node out/dist/run.mjs
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -38,10 +39,31 @@ tasks:
       - task: eslint:check
       - task: tsc:typecheck
 
+  docs:environment:
+    desc: Generate environment variable usage documentation
+    deps: [js:install-deps]
+    sources:
+      - src/env.ts
+      - src/run.ts
+      - package.json
+    generates:
+      - ENVIRONMENT.md
+    env:
+      AUSTENITE_MODE: usage/markdown
+      AUSTENITE_APP: "{{.APP_NAME}}"
+    cmd: node --experimental-strip-types src/run.ts > ENVIRONMENT.md
+
   build:
     desc: Build the app for production
+    deps: [next:build:standalone]
+    sources:
+      - out/next/standalone/**
+    generates:
+      - out/dist/**
     cmds:
-      - task: next:build:standalone
+      - rm -rf out/dist
+      - cp -a out/next/standalone out/dist
+      - node --experimental-strip-types src/build-run.ts out/dist/run.mjs
 
   image:
     desc: Build the container image
@@ -59,6 +81,7 @@ tasks:
       - task: tsc:typecheck
       - task: build
       - task: docker:build
+      - task: docs:environment
 
   ci:
     desc: Run all continuous integration checks
