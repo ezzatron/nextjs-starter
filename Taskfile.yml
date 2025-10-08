@@ -96,7 +96,7 @@ tasks:
 
   precommit:
     desc: Run all pre-commit checks
-    aliases: [pc]
+    aliases: [pc, default]
     cmds:
       - task: regenerate:check
       - task: prettier:write

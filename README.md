@@ -10,6 +10,13 @@ Install [Task] and start the development server with:
 task dev
 ```
 
+The default task runs all pre-commit checks (tests, linting, type checking,
+formatting, etc.):
+
+```sh
+task
+```
+
 See all available tasks with:
 
 ```sh
