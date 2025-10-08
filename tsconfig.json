@@ -17,6 +17,10 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
+    "types": [
+      "@vitest/browser/matchers",
+      "@vitest/browser/providers/playwright"
+    ],
     "verbatimModuleSyntax": true
   },
   "exclude": ["node_modules"],

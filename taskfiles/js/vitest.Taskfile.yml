@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  test:
+    internal: true
+    desc: Run Vitest tests
+    deps: [":playwright:install"]
+    cmd: "{{.JS_EXEC}} vitest"

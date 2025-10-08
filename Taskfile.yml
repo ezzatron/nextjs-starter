@@ -11,8 +11,10 @@ includes:
   eslint: ./taskfiles/js/eslint.Taskfile.yml
   js: ./taskfiles/js
   next: ./taskfiles/js/next.Taskfile.yml
+  playwright: ./taskfiles/js/playwright.Taskfile.yml
   prettier: ./taskfiles/js/prettier.Taskfile.yml
   tsc: ./taskfiles/js/tsc.Taskfile.yml
+  vitest: ./taskfiles/js/vitest.Taskfile.yml
 
 tasks:
   install-deps:
@@ -38,6 +40,12 @@ tasks:
     deps: [image]
     cmds:
       - "docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
+
+  test:
+    desc: Run the tests
+    aliases: [t, default]
+    cmds:
+      - task: vitest:test
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -94,14 +102,15 @@ tasks:
     cmds:
       - task: docker:build
 
-  precommit:
+  pre-commit:
     desc: Run all pre-commit checks
-    aliases: [pc, default]
+    aliases: [pc]
     cmds:
       - task: regenerate:check
       - task: prettier:write
       - task: eslint:no-warnings
       - task: tsc:typecheck
+      - task: test
       - task: build
       - task: docker:build
 
@@ -109,6 +118,7 @@ tasks:
     desc: Run all continuous integration checks
     cmds:
       - task: regenerate:check
+      - task: test
       - task: build
       - task: docker:build
       - task: prettier:check

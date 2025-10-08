@@ -59,22 +59,22 @@ jobs:
         id: detect-artifacts
         run: |
           echo "suffix=${GITHUB_REPOSITORY//\//-}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT";
-          if [ -d artifacts/playwright/report/html ]; then echo "playwright=true" >> "$GITHUB_OUTPUT"; fi
-          if [ -d artifacts/vitest/browser/screenshots ]; then echo "vitest-screenshots=true" >> "$GITHUB_OUTPUT"; fi
+          if [ -d out/playwright/report/html ]; then echo "playwright=true" >> "$GITHUB_OUTPUT"; fi
+          if [ -d out/vitest/browser/screenshots ]; then echo "vitest-screenshots=true" >> "$GITHUB_OUTPUT"; fi
 
       - name: Upload Playwright report
         if: "!cancelled() && steps.detect-artifacts.outputs.playwright == 'true'"
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ steps.detect-artifacts.outputs.suffix }}
-          path: artifacts/playwright/report/html
+          path: out/playwright/report/html
 
       - name: Upload Vitest screenshots
         if: "!cancelled() && steps.detect-artifacts.outputs.vitest-screenshots == 'true'"
         uses: actions/upload-artifact@v4
         with:
           name: vitest-screenshots-${{ steps.detect-artifacts.outputs.suffix }}
-          path: artifacts/vitest/browser/screenshots
+          path: out/vitest/browser/screenshots
 
       - name: Upload package manager files
         if: "!cancelled()"

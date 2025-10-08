@@ -2,31 +2,29 @@
 
 ## Usage
 
-Install [Task] and start the development server with:
+Install [Task] and see all available tasks with:
 
 [Task]: https://taskfile.dev/
-
-```sh
-task dev
-```
-
-The default task runs all pre-commit checks (tests, linting, type checking,
-formatting, etc.):
-
-```sh
-task
-```
-
-See all available tasks with:
 
 ```sh
 task --list
 ```
 
+The default task runs the tests:
+
+```sh
+task
+```
+
+Start a development server with:
+
+```sh
+task dev
+```
+
 ## TODO
 
-- [ ] Vitest
-- [ ] Playwright
+- [ ] Playwright Test
 - [ ] Storybook
 - [ ] Chromatic
 - [ ] Demo content
