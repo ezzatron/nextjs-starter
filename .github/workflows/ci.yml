@@ -28,9 +28,12 @@ jobs:
         id: detect-playwright
         run: |
           if grep -q playwright package.json; then
-            echo "version=$(npm ls playwright | grep -m1 -oE 'playwright@\S+' | cut -d'@' -f2)" >> "$GITHUB_OUTPUT";
+            PLAYWRIGHT_VERSION="$(npm ls playwright | grep -m1 -oE 'playwright@\S+' | cut -d'@' -f2)"
+            echo "Playwright $PLAYWRIGHT_VERSION detected in package.json"
+            echo "version=$PLAYWRIGHT_VERSION" >> "$GITHUB_OUTPUT"
           else
-            echo "version=" >> "$GITHUB_OUTPUT";
+            echo "Playwright not detected in package.json"
+            echo "version=" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Cache Playwright
