@@ -24,6 +24,9 @@ jobs:
       - name: Set up Task
         uses: go-task/setup-task@v1
 
+      - name: Install dependencies
+        run: task install-deps
+
       - name: Detect Playwright
         id: detect-playwright
         run: |
