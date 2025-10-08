@@ -24,10 +24,10 @@ task dev
 
 ## TODO
 
-- [ ] Playwright Test
 - [ ] Storybook
 - [ ] Chromatic
 - [ ] Demo content
+- [ ] Mountebank / WireMock examples
 - [ ] WorkOS
 - [ ] Hosting
 - [ ] otel

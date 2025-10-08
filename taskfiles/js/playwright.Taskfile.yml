@@ -1,9 +1,19 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  JS_PLAYWRIGHT_TEST_FORBID_ONLY: false
+  JS_PLAYWRIGHT_TEST_PROJECTS: []
+
 tasks:
   install:
     internal: true
     desc: Install Playwright browsers
     deps: [":js:install-deps"]
     cmd: "{{.JS_EXEC}} playwright install --with-deps"
+
+  test:
+    internal: true
+    desc: Run Playwright tests
+    deps: [install]
+    cmd: "{{.JS_EXEC}} playwright test{{if .JS_PLAYWRIGHT_TEST_FORBID_ONLY}} --forbid-only{{end}}{{range .JS_PLAYWRIGHT_TEST_PROJECTS}} --project {{.}}{{end}}"

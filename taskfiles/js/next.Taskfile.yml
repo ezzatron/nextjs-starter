@@ -2,7 +2,7 @@
 version: "3"
 
 tasks:
-  run:
+  dev:
     internal: true
     desc: Run the Next.js app in development mode
     deps: [":js:install-deps"]
