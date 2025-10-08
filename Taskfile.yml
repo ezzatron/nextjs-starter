@@ -110,7 +110,10 @@ tasks:
       - task: prettier:write
       - task: eslint:no-warnings
       - task: tsc:typecheck
-      - task: test
+      - task: vitest:test
+        vars:
+          JS_VITEST_FORBID_ONLY: true
+          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit"]
       - task: build
       - task: docker:build
 
@@ -118,7 +121,10 @@ tasks:
     desc: Run all continuous integration checks
     cmds:
       - task: regenerate:check
-      - task: test
+      - task: vitest:test
+        vars:
+          JS_VITEST_FORBID_ONLY: true
+          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit"]
       - task: build
       - task: docker:build
       - task: prettier:check

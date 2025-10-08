@@ -30,3 +30,5 @@ task dev
 - [ ] Demo content
 - [ ] WorkOS
 - [ ] Hosting
+- [ ] otel
+- [ ] pnpm

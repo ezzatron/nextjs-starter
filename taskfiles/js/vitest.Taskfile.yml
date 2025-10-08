@@ -1,9 +1,13 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  JS_VITEST_FORBID_ONLY: false
+  JS_VITEST_PROJECTS: []
+
 tasks:
   test:
     internal: true
     desc: Run Vitest tests
     deps: [":playwright:install"]
-    cmd: "{{.JS_EXEC}} vitest"
+    cmd: "{{.JS_EXEC}} vitest{{if .JS_VITEST_FORBID_ONLY}} --allowOnly=false{{end}}{{range .JS_VITEST_PROJECTS}} --project {{.}}{{end}}"
