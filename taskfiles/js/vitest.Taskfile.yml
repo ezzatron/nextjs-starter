@@ -7,7 +7,6 @@ vars:
 
 tasks:
   test:
-    internal: true
     desc: Run Vitest tests
     deps: [":playwright:install"]
     cmd: "{{.JS_EXEC}} vitest{{if .JS_VITEST_FORBID_ONLY}} --allowOnly=false{{end}}{{range .JS_VITEST_PROJECTS}} --project {{.}}{{end}}"

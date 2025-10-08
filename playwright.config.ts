@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const isCI = process.env.CI === "true";
 const isDefaultProjects =
   process.argv.some((a) => a === "test") &&
   !process.argv.some((a) => a.match(/^--project\b/));
@@ -13,7 +14,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: 1,
   reporter: [
-    ["dot"],
+    [isCI ? "github" : "list"],
     [
       "html",
       {

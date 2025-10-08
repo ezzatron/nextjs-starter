@@ -2,7 +2,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
 const isCI = process.env.CI === "true";
-const timeout = isCI ? 30000 : 3000;
+const timeout = isCI ? 30_000 : 3_000;
 const isDefaultProjects = !process.argv.some((a) => a.match(/^--project\b/));
 
 const browserOptions = {

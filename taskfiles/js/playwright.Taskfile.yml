@@ -3,7 +3,9 @@ version: "3"
 
 vars:
   JS_PLAYWRIGHT_TEST_FORBID_ONLY: false
+  JS_PLAYWRIGHT_TEST_HEADED: false
   JS_PLAYWRIGHT_TEST_PROJECTS: []
+  JS_PLAYWRIGHT_TEST_UI: false
 
 tasks:
   install:
@@ -12,7 +14,30 @@ tasks:
     cmd: "{{.JS_EXEC}} playwright install --with-deps"
 
   test:
-    internal: true
     desc: Run Playwright tests
     deps: [install]
-    cmd: "{{.JS_EXEC}} playwright test{{if .JS_PLAYWRIGHT_TEST_FORBID_ONLY}} --forbid-only{{end}}{{range .JS_PLAYWRIGHT_TEST_PROJECTS}} --project {{.}}{{end}}"
+    cmd: >-
+      {{.JS_EXEC}} playwright test
+      {{if .JS_PLAYWRIGHT_TEST_HEADED}}--headed{{end}}
+      {{if .JS_PLAYWRIGHT_TEST_UI}}--ui{{end}}
+      {{if .JS_PLAYWRIGHT_TEST_FORBID_ONLY}}--forbid-only{{end}}
+      {{range .JS_PLAYWRIGHT_TEST_PROJECTS}}--project {{.}}{{end}}
+
+  test:headed:
+    desc: Run Playwright tests in headed mode
+    cmds:
+      - task: test
+        vars:
+          JS_PLAYWRIGHT_TEST_HEADED: true
+
+  test:ui:
+    desc: Run Playwright tests in UI mode
+    cmds:
+      - task: test
+        vars:
+          JS_PLAYWRIGHT_TEST_UI: true
+
+  show-report:
+    desc: Show the HTML report from the last test run
+    aliases: [report]
+    cmd: "{{.JS_EXEC}} playwright show-report out/playwright/report/html"

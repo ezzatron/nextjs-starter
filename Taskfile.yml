@@ -42,7 +42,7 @@ tasks:
       - "docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
 
   test:
-    desc: Run the tests
+    desc: Run all test suites
     aliases: [t, default]
     cmds:
       - task: vitest:test
