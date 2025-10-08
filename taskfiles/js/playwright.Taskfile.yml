@@ -7,7 +7,6 @@ vars:
 
 tasks:
   install:
-    internal: true
     desc: Install Playwright browsers
     deps: [":js:install-deps"]
     cmd: "{{.JS_EXEC}} playwright install --with-deps"

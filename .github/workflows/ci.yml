@@ -47,6 +47,9 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.detect-playwright.outputs.version }}-${{ runner.os }}-${{ runner.arch }}
 
+      - name: Install Playwright browsers
+        run: task playwright:install
+
       - name: Cache Next.js build
         uses: actions/cache@v4
         with:
