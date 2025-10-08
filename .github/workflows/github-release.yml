@@ -20,3 +20,5 @@ jobs:
 
       - name: Publish GitHub release
         uses: ghalactic/github-release-from-tag@v6
+        with:
+          makeLatest: semver
