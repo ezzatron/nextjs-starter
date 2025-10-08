@@ -2,7 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "task run:dev"
+    "start": "task run:dev",
+    "test": "task test"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.14",
