@@ -37,7 +37,7 @@ tasks:
     desc: Run the app in a container
     deps: [image]
     cmds:
-      - docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
+      - "docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -93,12 +93,6 @@ tasks:
     deps: [build]
     cmds:
       - task: docker:build
-
-  image:push:
-    desc: Build the container image and push it to the registry
-    deps: [build]
-    cmds:
-      - task: docker:push
 
   precommit:
     desc: Run all pre-commit checks
