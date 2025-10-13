@@ -10,12 +10,7 @@ tasks:
     desc: Build the Docker image for the local platform and load it into Docker
     requires:
       vars: [IMAGE_NAME, IMAGE_TAG]
-    vars:
-      GITHUB_ACTIONS:
-        sh: echo "$GITHUB_ACTIONS"
     cmd: >-
       docker buildx build --pull --load
-      {{if .GITHUB_ACTIONS}}--cache-from=type=gha{{end}}
-      {{if .GITHUB_ACTIONS}}--cache-to=type=gha,mode=max{{end}}
       --tag="{{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
       .

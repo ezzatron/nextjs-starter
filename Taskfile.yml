@@ -167,12 +167,6 @@ tasks:
     cmds:
       - task: regenerate:check
 
-  ci:image:
-    desc: Build the container image for continuous integration
-    cmds:
-      - task: build
-      - task: docker:build
-
   ci:vitest:
     desc: Run Vitest tests for continuous integration
     cmds:

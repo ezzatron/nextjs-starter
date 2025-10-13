@@ -36,6 +36,9 @@ jobs:
       - name: Set up Task
         uses: go-task/setup-task@v1
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Install dependencies
         run: task install-deps
 
@@ -65,8 +68,21 @@ jobs:
       - name: Check generated files
         run: task ci:regenerate
 
-      - name: Build
-        run: task ci:image
+      - name: Extract image metadata
+        id: image-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          context: .
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.image-meta.outputs.tags }}
+          labels: ${{ steps.image-meta.outputs.labels }}
 
       - name: Vitest
         run: task ci:vitest
