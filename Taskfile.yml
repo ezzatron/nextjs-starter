@@ -60,6 +60,7 @@ tasks:
     aliases: [t, default]
     cmds:
       - task: vitest:test
+      - task: build
       - task: playwright:test
 
   coverage:
@@ -144,11 +145,11 @@ tasks:
         vars:
           JS_VITEST_FORBID_ONLY: true
           JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit", "storybook"]
+      - task: build
       - task: playwright:test
         vars:
           JS_PLAYWRIGHT_TEST_FORBID_ONLY: true
           JS_PLAYWRIGHT_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
-      - task: build
       - task: docker:build
 
   clean:

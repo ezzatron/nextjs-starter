@@ -15,6 +15,7 @@ includes:
 tasks:
   test:
     desc: Run Vitest tests
+    deps: [":js:install-deps"]
     cmd: >-
       {{.JS_EXEC}} vitest
       {{if .JS_VITEST_UI}}--ui{{end}}
