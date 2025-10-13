@@ -21,14 +21,6 @@ tasks:
   install-deps:
     desc: Install dependencies
     aliases: [install, i, deps]
-    vars:
-      ACTUAL_VERSION:
-        sh: node --version
-      EXPECTED_VERSION:
-        sh: cat .node-version
-    preconditions:
-      - sh: test "{{.ACTUAL_VERSION}}" = "v{{.EXPECTED_VERSION}}"
-        msg: Expected Node.js version v{{.EXPECTED_VERSION}}, but got {{.ACTUAL_VERSION}}
     cmds:
       - task: js:install-deps
 
