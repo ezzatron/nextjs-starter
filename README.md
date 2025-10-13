@@ -50,7 +50,7 @@ switch to the correct pnpm version when you navigate to the project directory.
 
 > [!WARNING]
 >
-> Corepack is bundled with Node.js until v24. If you're using Node.js v25 or
+> Corepack is bundled with Node.js until v25. If you're using Node.js v25 or
 > later, you'll to install Corepack separately.
 
 ### Task
