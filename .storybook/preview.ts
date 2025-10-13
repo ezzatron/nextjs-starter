@@ -1,8 +1,6 @@
 import type { Preview } from "@storybook/nextjs-vite";
 import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 
-console.log(MINIMAL_VIEWPORTS);
-
 const preview: Preview = {
   parameters: {
     controls: {
@@ -101,10 +99,14 @@ const preview: Preview = {
     chromatic: {
       modes: {
         mobile: {
-          viewport: "iPhoneSE",
+          viewport: Object.keys(MINIMAL_VIEWPORTS).find(
+            (k) => MINIMAL_VIEWPORTS[k].name === "Small mobile",
+          ),
         },
         desktop: {
-          viewport: "tailwindXl",
+          viewport: Object.keys(MINIMAL_VIEWPORTS).find(
+            (k) => MINIMAL_VIEWPORTS[k].name === "Desktop",
+          ),
         },
       },
     },
