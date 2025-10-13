@@ -15,6 +15,12 @@ const browserOptions = {
 } as const;
 
 const browserInstanceOptions = {
+  connect: {
+    wsEndpoint: "ws://localhost:7357",
+    options: {
+      exposeNetwork: "<loopback>",
+    },
+  },
   context: {
     timezoneId: "UTC",
   },

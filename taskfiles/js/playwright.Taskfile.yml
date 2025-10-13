@@ -2,6 +2,8 @@
 version: "3"
 
 vars:
+  JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK: <loopback>
+  JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT: ws://localhost:7357
   JS_PLAYWRIGHT_TEST_FORBID_ONLY: false
   JS_PLAYWRIGHT_TEST_HEADED: false
   JS_PLAYWRIGHT_TEST_PROJECTS: []
@@ -11,16 +13,13 @@ tasks:
   install:
     desc: Install Playwright browsers
     deps: [":js:install-deps"]
-    status:
-      - test -f out/playwright/install.touch
-    cmds:
-      - mkdir -p out/playwright
-      - "{{.JS_EXEC}} playwright install --with-deps"
-      - touch out/playwright/install.touch
+    cmd: "{{.JS_EXEC}} playwright install --with-deps"
 
   test:
     desc: Run Playwright tests
-    deps: [install]
+    env:
+      PW_TEST_CONNECT_WS_ENDPOINT: "{{.JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT}}"
+      PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK}}"
     cmd: >-
       {{.JS_EXEC}} playwright test
       {{if .JS_PLAYWRIGHT_TEST_HEADED}}--headed{{end}}
@@ -33,6 +32,8 @@ tasks:
     cmds:
       - task: test
         vars:
+          JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK: ""
+          JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT: ""
           JS_PLAYWRIGHT_TEST_HEADED: true
 
   test:ui:

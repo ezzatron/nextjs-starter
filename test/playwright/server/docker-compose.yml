@@ -1,0 +1,11 @@
+name: playwright-server
+
+services:
+  playwright:
+    ipc: host
+    init: true
+    network_mode: bridge
+    ports:
+      - 7357:7357
+    build:
+      context: .

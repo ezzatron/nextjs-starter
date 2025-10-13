@@ -10,11 +10,18 @@ env:
   FORCE_COLOR: "true"
 
 jobs:
-  ci:
-    name: Continuous integration
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
+    outputs:
+      artifact-suffix: ${{ steps.artifact-suffix.outputs.suffix }}
+
     steps:
+      - name: Build artifact suffix
+        id: artifact-suffix
+        run: echo "suffix=${GITHUB_REPOSITORY//\//-}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -54,17 +61,6 @@ jobs:
             echo "version=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Cache Playwright
-        if: steps.detect-playwright.outputs.version != ''
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ steps.detect-playwright.outputs.version }}-${{ runner.os }}-${{ runner.arch }}
-
-      - name: Install Playwright browsers
-        run: task playwright:install
-
       - name: Check generated files
         run: task ci:regenerate
 
@@ -79,6 +75,8 @@ jobs:
 
       - name: Build image
         uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_RECORD_RETENTION_DAYS: "7"
         with:
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -87,11 +85,157 @@ jobs:
           tags: ${{ steps.image-meta.outputs.tags }}
           labels: ${{ steps.image-meta.outputs.labels }}
 
+      # This is necessary to preserve executable permissions
+      - name: Archive build artifacts
+        if: "!cancelled()"
+        run: |
+          git ls-files --others --ignored --exclude-standard > out/build-manifest
+          tar -cf out/build-artifacts.tar --files-from=out/build-manifest
+      - name: Upload build artifacts
+        if: "!cancelled()"
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ steps.artifact-suffix.outputs.suffix }}
+          retention-days: "7"
+          overwrite: "true"
+          if-no-files-found: error
+          path: out/build-artifacts.tar
+
+      - name: Upload package manager files
+        if: "!cancelled()"
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-manager-files-${{ steps.artifact-suffix.outputs.suffix }}
+          retention-days: "7"
+          overwrite: "true"
+          if-no-files-found: ignore
+          path: |
+            package.json
+            pnpm-lock.yaml
+
+  vitest:
+    name: Vitest
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: build-${{ needs.build.outputs.artifact-suffix }}
+          path: out
+      - name: Extract build artifacts
+        run: tar -xf out/build-artifacts.tar
+
+      - name: Start test services
+        run: task test:services:up
+
       - name: Vitest
         run: task ci:vitest
 
+      - name: Stop test services
+        if: always()
+        run: task test:services:down
+
+      - name: Upload Vitest screenshots
+        if: "!cancelled()"
+        uses: actions/upload-artifact@v4
+        with:
+          name: vitest-screenshots-${{ needs.build.outputs.artifact-suffix }}
+          retention-days: "7"
+          overwrite: "true"
+          if-no-files-found: ignore
+          path: out/vitest/browser/screenshots
+
+  playwright:
+    name: Playwright
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: build-${{ needs.build.outputs.artifact-suffix }}
+          path: out
+      - name: Extract build artifacts
+        run: tar -xf out/build-artifacts.tar
+
+      - name: Start test services
+        run: task test:services:up
+
       - name: Playwright
         run: task ci:playwright
+
+      - name: Stop test services
+        if: always()
+        run: task test:services:down
+
+      - name: Upload Playwright report
+        if: "!cancelled()"
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ needs.build.outputs.artifact-suffix }}
+          retention-days: "7"
+          overwrite: "true"
+          if-no-files-found: error
+          path: out/playwright/report/html
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: build-${{ needs.build.outputs.artifact-suffix }}
+          path: out
+      - name: Extract build artifacts
+        run: tar -xf out/build-artifacts.tar
 
       - name: ESLint
         run: task ci:eslint
@@ -101,35 +245,3 @@ jobs:
 
       - name: Prettier
         run: task ci:prettier
-
-      - name: Detect artifacts
-        if: "!cancelled()"
-        id: detect-artifacts
-        run: |
-          echo "suffix=${GITHUB_REPOSITORY//\//-}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT";
-          if [ -d out/playwright/report/html ]; then echo "playwright=true" >> "$GITHUB_OUTPUT"; fi
-          if [ -d out/vitest/browser/screenshots ]; then echo "vitest-screenshots=true" >> "$GITHUB_OUTPUT"; fi
-
-      - name: Upload Playwright report
-        if: "!cancelled() && steps.detect-artifacts.outputs.playwright == 'true'"
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report-${{ steps.detect-artifacts.outputs.suffix }}
-          path: out/playwright/report/html
-
-      - name: Upload Vitest screenshots
-        if: "!cancelled() && steps.detect-artifacts.outputs.vitest-screenshots == 'true'"
-        uses: actions/upload-artifact@v4
-        with:
-          name: vitest-screenshots-${{ steps.detect-artifacts.outputs.suffix }}
-          path: out/vitest/browser/screenshots
-
-      - name: Upload package manager files
-        if: "!cancelled()"
-        uses: actions/upload-artifact@v4
-        with:
-          name: package-manager-files-${{ steps.detect-artifacts.outputs.suffix }}
-          if-no-files-found: ignore
-          path: |
-            package.json
-            pnpm-lock.yaml

@@ -15,7 +15,6 @@ includes:
 tasks:
   test:
     desc: Run Vitest tests
-    deps: [":playwright:install"]
     cmd: >-
       {{.JS_EXEC}} vitest
       {{if .JS_VITEST_UI}}--ui{{end}}
