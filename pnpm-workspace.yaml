@@ -5,6 +5,9 @@ useNodeVersion: 24.10.0
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
+  - cpu-features
   - esbuild
+  - protobufjs
   - sharp
+  - ssh2
   - unrs-resolver
