@@ -8,5 +8,7 @@ beforeEach(() => {
 });
 
 it("works", async () => {
+  await page.screenshot();
+
   await expect.element(page.getByText("it works")).toBeVisible();
 });
