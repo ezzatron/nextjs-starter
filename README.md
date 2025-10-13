@@ -48,6 +48,11 @@ switch to the correct pnpm version when you navigate to the project directory.
 
 [corepack]: https://github.com/nodejs/corepack
 
+> [!WARNING]
+>
+> Corepack is bundled with Node.js until v24. If you're using Node.js v25 or
+> later, you'll to install Corepack separately.
+
 ### Task
 
 [Task] is used to run tasks like building, testing, and running development
