@@ -2,12 +2,12 @@
 version: "3"
 
 vars:
-  JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK: <loopback>
-  JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT: ws://localhost:7357
-  JS_PLAYWRIGHT_TEST_FORBID_ONLY: false
-  JS_PLAYWRIGHT_TEST_HEADED: false
-  JS_PLAYWRIGHT_TEST_PROJECTS: []
-  JS_PLAYWRIGHT_TEST_UI: false
+  JS_PW_TEST_CONNECT_EXPOSE_NETWORK: <loopback>
+  JS_PW_TEST_CONNECT_WS_ENDPOINT: ws://localhost:7357
+  JS_PW_TEST_FORBID_ONLY: false
+  JS_PW_TEST_HEADED: false
+  JS_PW_TEST_PROJECTS: []
+  JS_PW_TEST_UI: false
 
 tasks:
   install:
@@ -18,30 +18,30 @@ tasks:
   test:
     desc: Run Playwright tests
     env:
-      PW_TEST_CONNECT_WS_ENDPOINT: "{{.JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT}}"
-      PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK}}"
+      PW_TEST_CONNECT_WS_ENDPOINT: "{{.JS_PW_TEST_CONNECT_WS_ENDPOINT}}"
+      PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.JS_PW_TEST_CONNECT_EXPOSE_NETWORK}}"
     cmd: >-
       {{.JS_EXEC}} playwright test
-      {{if .JS_PLAYWRIGHT_TEST_HEADED}}--headed{{end}}
-      {{if .JS_PLAYWRIGHT_TEST_UI}}--ui{{end}}
-      {{if .JS_PLAYWRIGHT_TEST_FORBID_ONLY}}--forbid-only{{end}}
-      {{range .JS_PLAYWRIGHT_TEST_PROJECTS}} --project {{.}}{{end}}
+      {{if .JS_PW_TEST_HEADED}}--headed{{end}}
+      {{if .JS_PW_TEST_UI}}--ui{{end}}
+      {{if .JS_PW_TEST_FORBID_ONLY}}--forbid-only{{end}}
+      {{range .JS_PW_TEST_PROJECTS}} --project {{.}}{{end}}
 
   test:headed:
     desc: Run Playwright tests in headed mode
     cmds:
       - task: test
         vars:
-          JS_PLAYWRIGHT_TEST_CONNECT_EXPOSE_NETWORK: ""
-          JS_PLAYWRIGHT_TEST_CONNECT_WS_ENDPOINT: ""
-          JS_PLAYWRIGHT_TEST_HEADED: true
+          JS_PW_TEST_CONNECT_EXPOSE_NETWORK: ""
+          JS_PW_TEST_CONNECT_WS_ENDPOINT: ""
+          JS_PW_TEST_HEADED: true
 
   test:ui:
     desc: Run Playwright tests in UI mode
     cmds:
       - task: test
         vars:
-          JS_PLAYWRIGHT_TEST_UI: true
+          JS_PW_TEST_UI: true
 
   show-report:
     desc: Show the HTML report from the last test run

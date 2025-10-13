@@ -148,8 +148,8 @@ tasks:
       - task: build
       - task: playwright:test
         vars:
-          JS_PLAYWRIGHT_TEST_FORBID_ONLY: true
-          JS_PLAYWRIGHT_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
+          JS_PW_TEST_FORBID_ONLY: true
+          JS_PW_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
       - task: docker:build
 
   clean:
@@ -189,8 +189,8 @@ tasks:
     cmds:
       - task: playwright:test
         vars:
-          JS_PLAYWRIGHT_TEST_FORBID_ONLY: true
-          JS_PLAYWRIGHT_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
+          JS_PW_TEST_FORBID_ONLY: true
+          JS_PW_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
 
   ci:eslint:
     desc: Run ESLint for continuous integration
