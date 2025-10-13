@@ -11,7 +11,12 @@ tasks:
   install:
     desc: Install Playwright browsers
     deps: [":js:install-deps"]
-    cmd: "{{.JS_EXEC}} playwright install --with-deps"
+    status:
+      - test -f out/playwright/install.touch
+    cmds:
+      - mkdir -p out/playwright
+      - "{{.JS_EXEC}} playwright install --with-deps"
+      - touch out/playwright/install.touch
 
   test:
     desc: Run Playwright tests
@@ -21,7 +26,7 @@ tasks:
       {{if .JS_PLAYWRIGHT_TEST_HEADED}}--headed{{end}}
       {{if .JS_PLAYWRIGHT_TEST_UI}}--ui{{end}}
       {{if .JS_PLAYWRIGHT_TEST_FORBID_ONLY}}--forbid-only{{end}}
-      {{range .JS_PLAYWRIGHT_TEST_PROJECTS}}--project {{.}}{{end}}
+      {{range .JS_PLAYWRIGHT_TEST_PROJECTS}} --project {{.}}{{end}}
 
   test:headed:
     desc: Run Playwright tests in headed mode

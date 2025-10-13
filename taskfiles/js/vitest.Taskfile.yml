@@ -2,11 +2,54 @@
 version: "3"
 
 vars:
+  JS_VITEST_COVERAGE_REPORTERS: ["text", "lcov"]
+  JS_VITEST_COVERAGE: false
   JS_VITEST_FORBID_ONLY: false
   JS_VITEST_PROJECTS: []
+  JS_VITEST_UI: false
+  JS_VITEST_WATCH: false
+
+includes:
+  util: ../util
 
 tasks:
   test:
     desc: Run Vitest tests
     deps: [":playwright:install"]
-    cmd: "{{.JS_EXEC}} vitest{{if .JS_VITEST_FORBID_ONLY}} --allowOnly=false{{end}}{{range .JS_VITEST_PROJECTS}} --project {{.}}{{end}}"
+    cmd: >-
+      {{.JS_EXEC}} vitest
+      {{if .JS_VITEST_UI}}--ui{{end}}
+      {{if .JS_VITEST_WATCH}}--watch{{end}}
+      {{if .JS_VITEST_COVERAGE}}--coverage.enabled --coverage.reportsDirectory=out/vitest/coverage{{end}}
+      {{if .JS_VITEST_COVERAGE}}{{range .JS_VITEST_COVERAGE_REPORTERS}} --coverage.reporter={{.}}{{end}}{{end}}
+      {{if .JS_VITEST_FORBID_ONLY}}--allowOnly=false{{end}}
+      {{range .JS_VITEST_PROJECTS}} --project {{.}}{{end}}
+
+  test:watch:
+    desc: Run Vitest tests in watch mode
+    cmds:
+      - task: test
+        vars:
+          JS_VITEST_WATCH: true
+
+  test:ui:
+    desc: Run Vitest tests in UI mode
+    cmds:
+      - task: test
+        vars:
+          JS_VITEST_UI: true
+          JS_VITEST_WATCH: true
+
+  coverage:
+    desc: Run Vitest tests with coverage
+    cmds:
+      - task: test
+        vars:
+          JS_VITEST_COVERAGE: true
+
+  coverage:open:
+    desc: Open the Vitest coverage report
+    cmds:
+      - task: util:open
+        vars:
+          TARGET: out/vitest/coverage/lcov-report/index.html

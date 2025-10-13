@@ -1,2 +1,11 @@
-*
-!/out/dist/
+# Can't use a simple exclusion because of https://github.com/testcontainers/testcontainers-node/issues/775
+/.github/
+/.storybook/
+/.task/
+/node_modules/
+/out/next/
+/out/playwright/
+/public/
+/src/
+/taskfiles/
+/test/

@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  JS_EXEC: pnpm exec --
+
+tasks:
+  init:
+    internal: true
+    silent: true
+    desc: Initialize pnpm
+    status:
+      - test -f package.json
+    cmd: 'echo ''{"private":true,"type":"module"}'' > package.json'
+
+  lock:
+    internal: true
+    desc: Lock pnpm dependencies
+    deps: [init]
+    status:
+      - test -f pnpm-lock.yaml
+    cmd: pnpm install --lockfile-only
+
+  install:
+    internal: true
+    desc: Install pnpm dependencies
+    deps: [lock]
+    sources:
+      - pnpm-lock.yaml
+    generates:
+      - node_modules/**
+    cmd: pnpm install --frozen-lockfile

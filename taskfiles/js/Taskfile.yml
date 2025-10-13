@@ -1,14 +1,11 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  JS_EXEC: npm exec --
-
 includes:
-  npm: ./npm.Taskfile.yml
+  pnpm: ./pnpm.Taskfile.yml
 
 tasks:
   install-deps:
     internal: true
     desc: Install JavaScript dependencies
-    deps: [npm:install]
+    deps: [pnpm:install]

@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+
 tasks:
   dev:
     internal: true
@@ -17,6 +20,7 @@ tasks:
       - tsconfig.json
       - public/**
       - src/**
+      - exclude: src/**/*.{stories,test}.*
     generates:
       - out/next/dist/**
     cmd: "{{.JS_EXEC}} next build --turbopack"
@@ -34,12 +38,12 @@ tasks:
       - out/next/standalone/**
     cmds:
       - rm -rf out/next/standalone
-      - cp -a out/next/dist/standalone out/next/standalone
+      - cp -r out/next/dist/standalone out/next/standalone
       - mkdir -p out/next/standalone/out/next/dist
-      - cp -a out/next/dist/cache out/next/standalone/out/next/dist/cache
-      - cp -a out/next/dist/static out/next/standalone/out/next/dist/static
-      - cp -a public out/next/standalone/
-      - jq --null-input --arg type commonjs '$ARGS.named' > out/next/standalone/package.json
+      - cp -r out/next/dist/cache out/next/standalone/out/next/dist/cache
+      - cp -r out/next/dist/static out/next/standalone/out/next/dist/static
+      - cp -r public out/next/standalone/
+      - 'echo ''{"type": "commonjs"}'' > out/next/standalone/package.json'
 
   start:
     internal: true

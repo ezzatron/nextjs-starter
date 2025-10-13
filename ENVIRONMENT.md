@@ -5,9 +5,10 @@ The `nextjs-starter` app uses **declarative environment variables** powered by
 
 [austenite]: https://github.com/ezzatron/austenite
 
-| Name            | Usage    | Description       |
-| :-------------- | :------- | :---------------- |
-| [`PORT`](#port) | Optional | Port to listen on |
+| Name                                      | Usage    | Description                       |
+| :---------------------------------------- | :------- | :-------------------------------- |
+| [`OTEL_SERVICE_NAME`](#otel_service_name) | Optional | OpenTelemetry service name        |
+| [`WEB_LISTEN_PORT`](#web_listen_port)     | Optional | Port to listen on for web traffic |
 
 <!-- prettier-ignore-start -->
 
@@ -16,21 +17,44 @@ The `nextjs-starter` app uses **declarative environment variables** powered by
 
 <!-- prettier-ignore-end -->
 
-## `PORT`
+## `OTEL_SERVICE_NAME`
 
-_Port to listen on_
+_OpenTelemetry service name_
 
-The `PORT` variable is an **optional** variable that takes **port number**
-values.
+The `OTEL_SERVICE_NAME` variable is an **optional** variable that takes
+**string** values.
 
 ### Default value
 
 ```sh
-export PORT=8000 # default
+export OTEL_SERVICE_NAME=nextjs-starter # default
 ```
 
 ### Example values
 
 ```sh
-export PORT=12345 # a port number
+export OTEL_SERVICE_NAME=conquistador # any value
+```
+
+```sh
+export OTEL_SERVICE_NAME='alabaster parakeet' # some values may need escaping
+```
+
+## `WEB_LISTEN_PORT`
+
+_Port to listen on for web traffic_
+
+The `WEB_LISTEN_PORT` variable is an **optional** variable that takes **port
+number** values.
+
+### Default value
+
+```sh
+export WEB_LISTEN_PORT=8000 # default
+```
+
+### Example values
+
+```sh
+export WEB_LISTEN_PORT=12345 # a port number
 ```

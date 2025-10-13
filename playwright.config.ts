@@ -5,9 +5,6 @@ const isDefaultProjects =
   process.argv.some((a) => a === "test") &&
   !process.argv.some((a) => a.match(/^--project\b/));
 
-const envBaseURL = process.env.PLAYWRIGHT_BASE_URL;
-const baseURL = envBaseURL || "http://localhost:7357";
-
 export default defineConfig({
   testDir: "test/playwright",
   outputDir: "out/playwright/output",
@@ -24,19 +21,8 @@ export default defineConfig({
     ],
   ],
   use: {
-    baseURL,
     trace: "on-first-retry",
   },
-  webServer: envBaseURL
-    ? undefined
-    : {
-        command: "task run:prod",
-        env: { PORT: "7357" },
-        url: "http://localhost:7357/robots.txt",
-        reuseExistingServer: false,
-        timeout: 60 * 1000, // 60 seconds
-        gracefulShutdown: { signal: "SIGINT", timeout: 500 },
-      },
   projects: [
     {
       name: "chromium",

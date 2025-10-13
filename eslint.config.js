@@ -2,6 +2,7 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import vitest from "@vitest/eslint-plugin";
+import storybook from "eslint-plugin-storybook";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -15,6 +16,7 @@ const config = [
   },
   // @ts-expect-error @vitest/eslint-plugin types are broken
   vitest.configs.recommended,
+  ...storybook.configs["flat/recommended"],
   ...compat.config({
     extends: [
       "eslint:recommended",

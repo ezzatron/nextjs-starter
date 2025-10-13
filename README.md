@@ -24,11 +24,6 @@ task dev
 
 ## TODO
 
-- [ ] Storybook
-- [ ] Chromatic
 - [ ] Demo content
-- [ ] Mountebank / WireMock examples
-- [ ] WorkOS
+- [ ] WireMock examples
 - [ ] Hosting
-- [ ] otel
-- [ ] pnpm

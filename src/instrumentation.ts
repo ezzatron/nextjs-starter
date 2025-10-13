@@ -1,6 +1,6 @@
-import { initialize } from "austenite/node";
+import { registerOTel } from "@vercel/otel";
+import { otelServiceName } from "./env";
 
 export async function register() {
-  // This ensures that austenite is included in the server bundle
-  await initialize();
+  registerOTel({ serviceName: otelServiceName.value() });
 }

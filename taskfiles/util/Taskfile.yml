@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  open:
+    internal: true
+    desc: Open the supplied file or URL with the default application
+    requires:
+      vars: [TARGET]
+    cmds:
+      - cmd: open "{{.TARGET}}"
+        platforms: [darwin]
+      - cmd: xdg-open "{{.TARGET}}"
+        platforms: [linux]
+      - cmd: cmd /c start "{{.TARGET}}"
+        platforms: [windows]

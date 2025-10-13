@@ -4,7 +4,7 @@
  */
 
 import { initialize } from "austenite/node";
-import { port } from "./env.ts";
+import { webListenPort } from "./env.ts";
 
 // Validates environment variables
 await initialize();
@@ -13,6 +13,6 @@ await initialize();
 process.env.HOSTNAME = "0.0.0.0";
 
 // Override the port to use the one defined in env.ts
-process.env.PORT = port.value().toString();
+process.env.PORT = webListenPort.value().toString();
 
 await import("nextjs-server");

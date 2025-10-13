@@ -13,6 +13,7 @@ includes:
   next: ./taskfiles/js/next.Taskfile.yml
   playwright: ./taskfiles/js/playwright.Taskfile.yml
   prettier: ./taskfiles/js/prettier.Taskfile.yml
+  storybook: ./taskfiles/js/storybook.Taskfile.yml
   tsc: ./taskfiles/js/tsc.Taskfile.yml
   vitest: ./taskfiles/js/vitest.Taskfile.yml
 
@@ -20,6 +21,14 @@ tasks:
   install-deps:
     desc: Install dependencies
     aliases: [install, i, deps]
+    vars:
+      ACTUAL_VERSION:
+        sh: node --version
+      EXPECTED_VERSION:
+        sh: cat .node-version
+    preconditions:
+      - sh: test "{{.ACTUAL_VERSION}}" = "v{{.EXPECTED_VERSION}}"
+        msg: Expected Node.js version v{{.EXPECTED_VERSION}}, but got {{.ACTUAL_VERSION}}
     cmds:
       - task: js:install-deps
 
@@ -46,7 +55,18 @@ tasks:
     aliases: [t, default]
     cmds:
       - task: vitest:test
+      - task: build # This stops Playwright from timing out during server start
       - task: playwright:test
+
+  coverage:
+    desc: Run tests with coverage
+    cmds:
+      - task: vitest:coverage
+
+  coverage:open:
+    desc: Open the coverage report
+    cmds:
+      - task: vitest:coverage:open
 
   lint:
     desc: Run formatting, linting, and type checking
@@ -54,6 +74,11 @@ tasks:
       - task: prettier:write
       - task: eslint:check
       - task: tsc:typecheck
+
+  storybook:
+    desc: Run Storybook in development mode
+    cmds:
+      - task: storybook:dev
 
   docs:environment:
     desc: Generate environment variable usage documentation
@@ -67,12 +92,12 @@ tasks:
     env:
       AUSTENITE_MODE: usage/markdown
       AUSTENITE_APP: "{{.APP_NAME}}"
-    cmd: node --experimental-strip-types src/run.ts > ENVIRONMENT.md
+    cmd: node src/run.ts > ENVIRONMENT.md
 
   regenerate:
     desc: Regenerate all generated files
     cmds:
-      - rm -rf {{.GENERATED_FILES}}
+      - task: clean:generated
       - task: docs:environment
 
   regenerate:check:
@@ -80,7 +105,7 @@ tasks:
     desc: Check if all generated files are up to date
     deps: [regenerate]
     preconditions:
-      - sh: git diff --exit-code -- {{.GENERATED_FILES}}
+      - sh: "git diff --exit-code -- {{.GENERATED_FILES}}"
         msg: Generated files are out of date
     cmd: echo All generated files are up to date
 
@@ -93,8 +118,8 @@ tasks:
       - out/dist/**
     cmds:
       - rm -rf out/dist
-      - cp -a out/next/standalone out/dist
-      - node --experimental-strip-types src/build-run.ts out/dist/run.mjs
+      - cp -r out/next/standalone out/dist
+      - node src/build-run.ts out/dist/run.mjs
 
   image:
     desc: Build the container image
@@ -114,7 +139,8 @@ tasks:
       - task: vitest:test
         vars:
           JS_VITEST_FORBID_ONLY: true
-          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit"]
+          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit", "storybook"]
+      - task: build # This stops Playwright from timing out during server start
       - task: playwright:test
         vars:
           JS_PLAYWRIGHT_TEST_FORBID_ONLY: true
@@ -122,20 +148,58 @@ tasks:
       - task: build
       - task: docker:build
 
-  ci:
-    desc: Run all continuous integration checks
+  clean:
+    desc: Clean all generated and ignored files
+    cmds:
+      - task: clean:generated
+      - task: clean:ignored
+
+  clean:generated:
+    desc: Clean all generated files
+    cmd: git restore --source=HEAD --staged --worktree -- {{.GENERATED_FILES}}
+
+  clean:ignored:
+    desc: Clean all ignored files
+    cmd: git clean -fdx
+
+  ci:regenerate:
+    desc: Check generated files for continuous integration
     cmds:
       - task: regenerate:check
+
+  ci:image:
+    desc: Build the container image for continuous integration
+    cmds:
       - task: build
       - task: docker:build
+
+  ci:vitest:
+    desc: Run Vitest tests for continuous integration
+    cmds:
       - task: vitest:test
         vars:
           JS_VITEST_FORBID_ONLY: true
-          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit"]
+          JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit", "storybook"]
+
+  ci:playwright:
+    desc: Run Playwright tests for continuous integration
+    cmds:
       - task: playwright:test
         vars:
           JS_PLAYWRIGHT_TEST_FORBID_ONLY: true
           JS_PLAYWRIGHT_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
-      - task: prettier:check
+
+  ci:eslint:
+    desc: Run ESLint for continuous integration
+    cmds:
       - task: eslint:no-warnings
+
+  ci:typecheck:
+    desc: Run tsc type checking for continuous integration
+    cmds:
       - task: tsc:typecheck
+
+  ci:prettier:
+    desc: Run Prettier check for continuous integration
+    cmds:
+      - task: prettier:check

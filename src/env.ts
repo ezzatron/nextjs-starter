@@ -1,5 +1,13 @@
-import { networkPortNumber } from "austenite";
+import { networkPortNumber, string } from "austenite";
 
-export const port = networkPortNumber("PORT", "Port to listen on", {
-  default: 8000,
-});
+export const otelServiceName = string(
+  "OTEL_SERVICE_NAME",
+  "OpenTelemetry service name",
+  { default: "nextjs-starter" },
+);
+
+export const webListenPort = networkPortNumber(
+  "WEB_LISTEN_PORT",
+  "Port to listen on for web traffic",
+  { default: 8000 },
+);

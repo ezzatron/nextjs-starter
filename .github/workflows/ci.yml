@@ -11,15 +11,27 @@ jobs:
     name: Continuous integration
     runs-on: ubuntu-latest
 
+    env:
+      FORCE_COLOR: "true"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
-          node-version-file: .nvmrc
-          cache: npm
+          node-version-file: .node-version
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: out/next/dist/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('next.config.*', 'tsconfig.json', 'public/**', 'src/**') }}
+          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Set up Task
         uses: go-task/setup-task@v1
@@ -31,7 +43,7 @@ jobs:
         id: detect-playwright
         run: |
           if grep -q playwright package.json; then
-            PLAYWRIGHT_VERSION="$(npm ls playwright | grep -m1 -oE 'playwright@\S+' | cut -d'@' -f2)"
+            PLAYWRIGHT_VERSION="$(pnpm list --json playwright | jq -r '.[] | .dependencies // .devDependencies | .playwright.version')"
             echo "Playwright $PLAYWRIGHT_VERSION detected in package.json"
             echo "version=$PLAYWRIGHT_VERSION" >> "$GITHUB_OUTPUT"
           else
@@ -50,18 +62,26 @@ jobs:
       - name: Install Playwright browsers
         run: task playwright:install
 
-      - name: Cache Next.js build
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-            ${{ github.workspace }}/out/next/dist/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('next.config.*', 'tsconfig.json', 'public/**', 'src/**') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+      - name: Check generated files
+        run: task ci:regenerate
 
-      - name: Test, build, and lint
-        run: task ci
+      - name: Build
+        run: task ci:image
+
+      - name: Vitest
+        run: task ci:vitest
+
+      - name: Playwright
+        run: task ci:playwright
+
+      - name: ESLint
+        run: task ci:eslint
+
+      - name: Typecheck
+        run: task ci:typecheck
+
+      - name: Prettier
+        run: task ci:prettier
 
       - name: Detect artifacts
         if: "!cancelled()"
@@ -92,5 +112,5 @@ jobs:
           name: package-manager-files-${{ steps.detect-artifacts.outputs.suffix }}
           if-no-files-found: ignore
           path: |
-            package-lock.json
             package.json
+            pnpm-lock.yaml

@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  dev:
+    desc: Run Storybook in development mode
+    deps: [":js:install-deps"]
+    cmd: "{{.JS_EXEC}} storybook dev -p 6006"
+
+  build:
+    desc: Build Storybook
+    deps: [":js:install-deps"]
+    cmd: "{{.JS_EXEC}} storybook build --output-dir=out/storybook"
