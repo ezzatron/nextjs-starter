@@ -29,6 +29,9 @@ jobs:
         with:
           node-version-file: .node-version
 
+      - name: Install dependencies
+        run: task install-deps
+
       - name: Publish
         uses: chromaui/action@v11
         with:
