@@ -167,6 +167,11 @@ tasks:
     cmds:
       - task: regenerate:check
 
+  ci:build:
+    desc: Build the app for continuous integration
+    cmds:
+      - task: build
+
   ci:vitest:
     desc: Run Vitest tests for continuous integration
     cmds:

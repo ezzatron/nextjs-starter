@@ -6,13 +6,13 @@ on:
   schedule:
     - cron: 0 14 * * 0 # Every Sunday, at midnight AEST
 
+env:
+  FORCE_COLOR: "true"
+
 jobs:
   ci:
     name: Continuous integration
     runs-on: ubuntu-latest
-
-    env:
-      FORCE_COLOR: "true"
 
     steps:
       - name: Checkout
@@ -67,6 +67,9 @@ jobs:
 
       - name: Check generated files
         run: task ci:regenerate
+
+      - name: Build
+        run: task ci:build
 
       - name: Extract image metadata
         id: image-meta
