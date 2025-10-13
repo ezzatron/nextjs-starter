@@ -68,7 +68,6 @@ tasks:
     aliases: [t, default]
     cmds:
       - task: vitest:test
-      - task: build # This stops Playwright from timing out during server start
       - task: playwright:test
 
   coverage:
@@ -153,7 +152,6 @@ tasks:
         vars:
           JS_VITEST_FORBID_ONLY: true
           JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit", "storybook"]
-      - task: build # This stops Playwright from timing out during server start
       - task: playwright:test
         vars:
           JS_PLAYWRIGHT_TEST_FORBID_ONLY: true

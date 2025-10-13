@@ -35,7 +35,7 @@ export const test = baseTest.extend<
         await started.stop();
       }
     },
-    { scope: "worker", auto: true },
+    { scope: "worker", auto: true, timeout: 60_000 },
   ],
 
   baseURL: async ({ appContainer }, use) => {
