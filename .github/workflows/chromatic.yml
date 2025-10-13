@@ -1,0 +1,43 @@
+name: Publish to Chromatic
+
+on:
+  push:
+    branches-ignore:
+      - mob/**
+      - renovate/**
+
+concurrency:
+  group: publish-chromatic
+  cancel-in-progress: true
+
+jobs:
+  nodejs:
+    name: Publish to Chromatic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: "0" # required by chromaui/action@v1
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Publish
+        uses: chromaui/action@v11
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildCommand: task storybook:build
+          outputDir: out/storybook
+          autoAcceptChanges: main
+          exitOnceUploaded: "true"
+          exitZeroOnChanges: "true"

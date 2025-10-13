@@ -88,6 +88,5 @@ task test:services:down
 
 - [ ] Demo content
 - [ ] WireMock examples
-- [ ] Chromatic
 - [ ] Style Dictionary
 - [ ] Hosting
