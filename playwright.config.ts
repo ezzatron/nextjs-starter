@@ -26,19 +26,41 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: { ...devices["Pixel 5"] },
+      expect: {
+        toHaveScreenshot: {
+          pathTemplate:
+            "{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-chromium{ext}",
+        },
+      },
     },
     ...(isDefaultProjects
       ? []
-      : [
+      : ([
           {
             name: "firefox",
-            use: { ...devices["Desktop Firefox"] },
+            use: {
+              ...devices["Pixel 5"],
+              defaultBrowserType: "firefox",
+              isMobile: false,
+            },
+            expect: {
+              toHaveScreenshot: {
+                pathTemplate:
+                  "{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-firefox{ext}",
+              },
+            },
           },
           {
             name: "webkit",
-            use: { ...devices["Desktop Safari"] },
+            use: { ...devices["iPhone SE"] },
+            expect: {
+              toHaveScreenshot: {
+                pathTemplate:
+                  "{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-webkit{ext}",
+              },
+            },
           },
-        ]),
+        ] as const)),
   ],
 });
