@@ -29,6 +29,9 @@ jobs:
         with:
           node-version-file: .node-version
 
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
       - name: Install dependencies
         run: task install-deps
 
