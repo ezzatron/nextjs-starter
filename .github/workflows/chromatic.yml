@@ -29,14 +29,11 @@ jobs:
         with:
           node-version-file: .node-version
 
-      - name: Set up Task
-        uses: go-task/setup-task@v1
-
       - name: Publish
         uses: chromaui/action@v11
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          buildCommand: task storybook:build
+          buildCommand: pnpm exec -- storybook build --output-dir=out/storybook
           outputDir: out/storybook
           autoAcceptChanges: main
           exitOnceUploaded: "true"
