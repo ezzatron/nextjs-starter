@@ -23,7 +23,7 @@ tasks:
       {{if .JS_VITEST_COVERAGE}}--coverage.enabled --coverage.reportsDirectory=out/vitest/coverage{{end}}
       {{if .JS_VITEST_COVERAGE}}{{range .JS_VITEST_COVERAGE_REPORTERS}} --coverage.reporter={{.}}{{end}}{{end}}
       {{if .JS_VITEST_FORBID_ONLY}}--allowOnly=false{{end}}
-      {{range .JS_VITEST_PROJECTS}} --project {{.}}{{end}}
+      {{range .JS_VITEST_PROJECTS}} --project="{{.}}"{{end}}
 
   test:watch:
     desc: Run Vitest tests in watch mode

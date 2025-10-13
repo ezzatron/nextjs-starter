@@ -25,7 +25,7 @@ tasks:
       {{if .JS_PW_TEST_HEADED}}--headed{{end}}
       {{if .JS_PW_TEST_UI}}--ui{{end}}
       {{if .JS_PW_TEST_FORBID_ONLY}}--forbid-only{{end}}
-      {{range .JS_PW_TEST_PROJECTS}} --project {{.}}{{end}}
+      {{range .JS_PW_TEST_PROJECTS}} --project="{{.}}"{{end}}
 
   test:headed:
     desc: Run Playwright tests in headed mode

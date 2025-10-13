@@ -39,21 +39,26 @@ tasks:
   run:container:
     desc: Run the app in a container
     deps: [image]
-    cmds:
-      - "docker run --rm -it -p 8000:8000 {{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
+    cmd: >-
+      docker run
+      --rm
+      --interactive
+      --tty
+      --publish=8000:8000
+      {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
 
   test:services:up:
     desc: Start the test services
     aliases: [test:services]
-    cmd: docker compose --file test/playwright/server/docker-compose.yml up --wait
+    cmd: docker compose --file=test/playwright/server/docker-compose.yml up --wait
 
   test:services:down:
     desc: Stop the test services
-    cmd: docker compose --file test/playwright/server/docker-compose.yml down
+    cmd: docker compose --file=test/playwright/server/docker-compose.yml down
 
   test:services:build:
     desc: Build the test services
-    cmd: docker compose --file test/playwright/server/docker-compose.yml build
+    cmd: docker compose --file=test/playwright/server/docker-compose.yml build
 
   test:
     desc: Run all test suites

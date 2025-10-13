@@ -5,7 +5,7 @@ tasks:
   dev:
     desc: Run Storybook in development mode
     deps: [":js:install-deps"]
-    cmd: "{{.JS_EXEC}} storybook dev -p 6006"
+    cmd: "{{.JS_EXEC}} storybook dev --port=6006"
 
   build:
     desc: Build Storybook
