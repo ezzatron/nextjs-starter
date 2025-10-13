@@ -60,6 +60,30 @@ servers.
 
 [task]: https://taskfile.dev/
 
+### Docker
+
+[Docker] is used to run [testcontainers] and the persistent [test services] for
+tests.
+
+[docker]: https://docker.com/
+[testcontainers]: https://testcontainers.com/
+[test services]: #test-services
+
+### Test services
+
+The tests expect some persistent test services to be running. You can start the
+test services with:
+
+```sh
+task test:services
+```
+
+And stop the services with:
+
+```sh
+task test:services:down
+```
+
 ## TODO
 
 - [ ] Demo content
