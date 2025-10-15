@@ -49,18 +49,6 @@ jobs:
       - name: Install dependencies
         run: task install-deps
 
-      - name: Detect Playwright
-        id: detect-playwright
-        run: |
-          if grep -q playwright package.json; then
-            PLAYWRIGHT_VERSION="$(pnpm list --json playwright | jq -r '.[] | .dependencies // .devDependencies | .playwright.version')"
-            echo "Playwright $PLAYWRIGHT_VERSION detected in package.json"
-            echo "version=$PLAYWRIGHT_VERSION" >> "$GITHUB_OUTPUT"
-          else
-            echo "Playwright not detected in package.json"
-            echo "version=" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Check generated files
         run: task ci:regenerate
 
