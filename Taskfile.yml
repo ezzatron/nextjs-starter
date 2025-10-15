@@ -165,7 +165,7 @@ tasks:
 
   clean:generated:
     desc: Clean all generated files
-    cmd: git restore --source=HEAD --staged --worktree -- {{.GENERATED_FILES}}
+    cmd: rm -rf {{.GENERATED_FILES}}
 
   clean:ignored:
     desc: Clean all ignored files
