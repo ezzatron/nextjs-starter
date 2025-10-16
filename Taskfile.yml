@@ -160,19 +160,20 @@ tasks:
           JS_PW_TEST_PROJECTS: ["chromium", "firefox", "webkit"]
       - task: docker:build
 
-  clean:
-    desc: Clean all generated and ignored files
-    cmds:
-      - task: clean:generated
-      - task: clean:ignored
-
   clean:generated:
     desc: Clean all generated files
     cmd: rm -rf {{.GENERATED_FILES}}
 
   clean:ignored:
     desc: Clean all ignored files
+    aliases: [clean]
     cmd: git clean -fdx
+
+  clean:all:
+    desc: Clean all generated and ignored files
+    cmds:
+      - task: clean:generated
+      - task: clean:ignored
 
   ci:regenerate:
     desc: Check generated files for continuous integration
