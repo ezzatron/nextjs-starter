@@ -17,7 +17,9 @@ tasks:
 
   test:
     desc: Run Playwright tests
-    deps: [":js:install-deps"]
+    deps:
+      - for: { var: JS_PW_TEST_DEPS }
+        task: ":{{.ITEM}}"
     env:
       PW_TEST_CONNECT_WS_ENDPOINT: "{{.JS_PW_TEST_CONNECT_WS_ENDPOINT}}"
       PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.JS_PW_TEST_CONNECT_EXPOSE_NETWORK}}"

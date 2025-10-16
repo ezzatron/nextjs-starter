@@ -11,7 +11,10 @@ includes:
   eslint: ./taskfiles/js/eslint.Taskfile.yml
   js: ./taskfiles/js
   next: ./taskfiles/js/next.Taskfile.yml
-  playwright: ./taskfiles/js/playwright.Taskfile.yml
+  playwright:
+    taskfile: ./taskfiles/js/playwright.Taskfile.yml
+    vars:
+      JS_PW_TEST_DEPS: ["build"]
   prettier: ./taskfiles/js/prettier.Taskfile.yml
   storybook: ./taskfiles/js/storybook.Taskfile.yml
   tsc: ./taskfiles/js/tsc.Taskfile.yml
