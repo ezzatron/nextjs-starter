@@ -17,6 +17,7 @@ tasks:
 
   test:
     desc: Run Playwright tests
+    deps: [":js:install-deps"]
     env:
       PW_TEST_CONNECT_WS_ENDPOINT: "{{.JS_PW_TEST_CONNECT_WS_ENDPOINT}}"
       PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.JS_PW_TEST_CONNECT_EXPOSE_NETWORK}}"
@@ -46,4 +47,5 @@ tasks:
   show-report:
     desc: Show the HTML report from the last test run
     aliases: [report]
+    deps: [":js:install-deps"]
     cmd: "{{.JS_EXEC}} playwright show-report out/playwright/report/html"
