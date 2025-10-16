@@ -36,7 +36,7 @@ jobs:
         run: task install-deps
 
       - name: Publish
-        uses: chromaui/action@v11
+        uses: chromaui/action@v13
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildCommand: pnpm exec -- storybook build --output-dir=out/storybook
