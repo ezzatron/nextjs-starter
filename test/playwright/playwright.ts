@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { expect as baseExpect, test as baseTest } from "@playwright/test";
+import { test as baseTest } from "@playwright/test";
 import { resolve } from "node:path";
 import {
   GenericContainer,
@@ -7,7 +7,7 @@ import {
   Wait,
 } from "testcontainers";
 
-export const expect = baseExpect;
+export { expect } from "@playwright/test";
 
 export const test = baseTest.extend<
   object,
