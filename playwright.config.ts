@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 const isCI = process.env.CI === "true";
 const isDefaultProjects =
   process.argv.some((a) => a === "test") &&
-  !process.argv.some((a) => a.match(/^--project\b/));
+  !process.argv.some((a) => /^--project\b/.test(a));
 
 export default defineConfig({
   testDir: "test/playwright",
