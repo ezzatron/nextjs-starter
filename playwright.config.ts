@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 const isCI = process.env.CI === "true";
 const isDefaultProjects =
-  process.argv.some((a) => a === "test") &&
+  process.argv.includes("test") &&
   !process.argv.some((a) => /^--project\b/.test(a));
 
 export default defineConfig({
