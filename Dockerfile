@@ -5,8 +5,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Set up a non-root user to run as
-RUN addgroup --system nodejs
-RUN adduser --system nextjs
+RUN addgroup --system nodejs && adduser --system nextjs
 
 COPY --chown=nextjs:nodejs out/dist ./
 
