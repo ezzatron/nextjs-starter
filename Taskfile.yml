@@ -190,6 +190,7 @@ tasks:
     cmds:
       - task: vitest:test
         vars:
+          JS_VITEST_COVERAGE: true
           JS_VITEST_FORBID_ONLY: true
           JS_VITEST_PROJECTS: ["chromium", "firefox", "webkit", "storybook"]
 
