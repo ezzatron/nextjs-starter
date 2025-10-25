@@ -10,3 +10,7 @@ onlyBuiltDependencies:
   - sharp
   - ssh2
   - unrs-resolver
+
+minimumReleaseAgeExclude:
+  - "*vitest*"
+  - "*storybook*"

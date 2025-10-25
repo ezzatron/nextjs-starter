@@ -1,6 +1,6 @@
-import { page } from "@vitest/browser/context";
 import { beforeEach, expect, it } from "vitest";
 import { render } from "vitest-browser-react";
+import { page } from "vitest/browser";
 import HomePage from "./page";
 
 beforeEach(() => {

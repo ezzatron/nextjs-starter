@@ -1,5 +1,6 @@
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
 import { join } from "node:path";
 import { defineConfig } from "vitest/config";
 
@@ -10,27 +11,21 @@ const isDefaultProjects = !process.argv.some((a) => /^--project\b/.test(a));
 const browserOptions = {
   enabled: true,
   headless: true,
-  provider: "playwright",
   screenshotDirectory: "out/vitest/browser/screenshots",
-} as const;
 
-const browserInstanceOptions = {
-  connect: {
-    wsEndpoint: "ws://localhost:7357",
-    options: {
+  provider: playwright({
+    connectOptions: {
+      wsEndpoint: "ws://localhost:7357",
       exposeNetwork: "<loopback>",
     },
-  },
-  context: {
-    timezoneId: "UTC",
-  },
+    contextOptions: {
+      timezoneId: "UTC",
+    },
+  }),
 } as const;
 
 export default defineConfig({
   publicDir: "out/vitest/browser/public",
-  define: {
-    "process.env": JSON.stringify({}),
-  },
   test: {
     watch: false,
     hookTimeout: timeout,
@@ -44,29 +39,18 @@ export default defineConfig({
       {
         plugins: [react()],
         test: {
+          setupFiles: ["test/vitest/setup.ts"],
           include: ["src/**/*.test.ts?(x)"],
           browser: {
             ...browserOptions,
             instances: [
-              {
-                ...browserInstanceOptions,
-                name: "chromium",
-                browser: "chromium",
-              },
+              { name: "chromium", browser: "chromium" },
               ...(isDefaultProjects
                 ? []
-                : [
-                    {
-                      ...browserInstanceOptions,
-                      name: "firefox",
-                      browser: "firefox",
-                    },
-                    {
-                      ...browserInstanceOptions,
-                      name: "webkit",
-                      browser: "webkit",
-                    },
-                  ]),
+                : ([
+                    { name: "firefox", browser: "firefox" },
+                    { name: "webkit", browser: "webkit" },
+                  ] as const)),
             ],
           },
         },
@@ -79,13 +63,7 @@ export default defineConfig({
           setupFiles: [".storybook/vitest.setup.ts"],
           browser: {
             ...browserOptions,
-            instances: [
-              {
-                ...browserInstanceOptions,
-                name: "storybook",
-                browser: "chromium",
-              },
-            ],
+            instances: [{ name: "storybook", browser: "chromium" }],
           },
         },
       },
