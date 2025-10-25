@@ -3,6 +3,7 @@ import { relative } from "node:path";
 
 const [, scriptPath, outfile] = process.argv;
 
+/* istanbul ignore if -- @preserve */
 if (!outfile) {
   console.error(`usage: node ${relative(process.cwd(), scriptPath)} <outfile>`);
   process.exit(1);

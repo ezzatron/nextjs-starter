@@ -37,10 +37,17 @@ export default defineConfig({
     },
     projects: [
       {
+        test: {
+          name: "server",
+          include: ["src/**/*.test.server.ts"],
+        },
+      },
+      {
         plugins: [react()],
         test: {
-          setupFiles: ["test/vitest/setup.ts"],
+          setupFiles: ["test/vitest/browser.setup.ts"],
           include: ["src/**/*.test.ts?(x)"],
+          exclude: ["src/**/*.test.server.ts"],
           browser: {
             ...browserOptions,
             instances: [
