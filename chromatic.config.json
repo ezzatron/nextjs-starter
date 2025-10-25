@@ -1,5 +1,11 @@
 {
+  "autoAcceptChanges": "main",
+  "buildCommand": "pnpm exec -- storybook build --output-dir=out/storybook",
+  "exitOnceUploaded": true,
+  "logFile": "out/chromatic/chromatic.log",
   "onlyChanged": true,
+  "outputDir": "out/storybook",
   "projectId": "Project:68ed04816904a37fca0147d3",
+  "storybookLogFile": "out/storybook/build-storybook.log",
   "zip": true
 }
