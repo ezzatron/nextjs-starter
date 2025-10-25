@@ -1,3 +1,4 @@
+/* istanbul ignore file -- @preserve */
 /**
  * This file runs before Next.js to validate the environment and automatically
  * set the correct listen hostname and port.

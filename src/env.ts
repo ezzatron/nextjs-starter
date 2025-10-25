@@ -1,3 +1,4 @@
+/* istanbul ignore file -- @preserve */
 import { networkPortNumber, string } from "austenite";
 
 export const otelServiceName = string(
