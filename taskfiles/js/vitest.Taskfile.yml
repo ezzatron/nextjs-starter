@@ -2,7 +2,7 @@
 version: "3"
 
 vars:
-  JS_VITEST_COVERAGE_REPORTERS: ["text", "lcov"]
+  JS_VITEST_COVERAGE_REPORTERS: [text, lcov]
   JS_VITEST_COVERAGE: false
   JS_VITEST_FORBID_ONLY: false
   JS_VITEST_PROJECTS: []

@@ -14,7 +14,7 @@ includes:
   playwright:
     taskfile: ./taskfiles/js/playwright.Taskfile.yml
     vars:
-      JS_PW_TEST_DEPS: ["build"]
+      JS_PW_TEST_DEPS: [build]
   prettier: ./taskfiles/js/prettier.Taskfile.yml
   storybook: ./taskfiles/js/storybook.Taskfile.yml
   tsc: ./taskfiles/js/tsc.Taskfile.yml
@@ -118,7 +118,7 @@ tasks:
     desc: Check if all generated files are up to date
     deps: [regenerate]
     preconditions:
-      - sh: "git diff --exit-code -- {{.GENERATED_FILES}}"
+      - sh: git diff --exit-code -- {{.GENERATED_FILES}}
         msg: Generated files are out of date
     cmd: echo All generated files are up to date
 

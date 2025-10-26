@@ -43,7 +43,7 @@ tasks:
       - cp -r out/next/dist/cache out/next/standalone/out/next/dist/cache
       - cp -r out/next/dist/static out/next/standalone/out/next/dist/static
       - cp -r public out/next/standalone/
-      - 'echo ''{"type": "commonjs"}'' > out/next/standalone/package.json'
+      - 'echo ''{"type":"commonjs"}'' > out/next/standalone/package.json'
 
   start:
     internal: true
@@ -55,4 +55,4 @@ tasks:
     internal: true
     desc: Start the Next.js production server in standalone mode
     deps: [build:standalone]
-    cmd: "node out/next/standalone/server.js"
+    cmd: node out/next/standalone/server.js
