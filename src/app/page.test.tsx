@@ -3,10 +3,12 @@ import { render } from "vitest-browser-react";
 import { page } from "vitest/browser";
 import HomePage from "./page";
 
-it("works", async () => {
+it("has a heading", async () => {
   render(<HomePage />);
 
-  await page.screenshot();
+  await expect
+    .element(page.getByRole("heading", { name: "Home" }))
+    .toBeVisible();
 
-  await expect.element(page.getByText("it works")).toBeVisible();
+  await page.screenshot();
 });

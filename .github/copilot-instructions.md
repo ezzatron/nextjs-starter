@@ -79,3 +79,6 @@ consistency of screenshots and other behavior across environments.
 - Only use erasable TypeScript syntax (i.e. no enums).
 - Follow Prettier default style (i.e. 2 space indentation, semicolons,
   double-quoted strings, 80 character line length).
+- Take advantage of TypeScript's type inference as much as possible. Don't add
+  explicit type annotations if the type can be easily inferred by the compiler.
+- Never use the `any` type.

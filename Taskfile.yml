@@ -3,7 +3,7 @@ version: "3"
 
 vars:
   APP_NAME: nextjs-starter
-  GENERATED_FILES: ENVIRONMENT.md
+  GENERATED_FILES: ENVIRONMENT.md src/api/gen
   IMAGE_NAME: ghcr.io/ezzatron/nextjs-starter
 
 includes:
@@ -42,26 +42,38 @@ tasks:
   run:container:
     desc: Run the app in a container
     deps: [image]
+    env:
+      PET_STORE_SERVICE_HOST: host.docker.internal
+      PET_STORE_SERVICE_PORT: "4770"
     cmd: >-
       docker run
+      --add-host=host.docker.internal:host-gateway
       --rm
       --interactive
       --tty
       --publish=8000:8000
+      --env="PET_STORE_SERVICE_HOST=$PET_STORE_SERVICE_HOST"
+      --env="PET_STORE_SERVICE_PORT=$PET_STORE_SERVICE_PORT"
       {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
 
   test:services:up:
     desc: Start the test services
     aliases: [test:services]
-    cmd: docker compose --file=test/playwright/server/docker-compose.yml up --wait
+    cmds:
+      - docker compose --file=test/api/docker-compose.yml up --wait
+      - docker compose --file=test/playwright/server/docker-compose.yml up --wait
 
   test:services:down:
     desc: Stop the test services
-    cmd: docker compose --file=test/playwright/server/docker-compose.yml down
+    cmds:
+      - docker compose --file=test/api/docker-compose.yml down
+      - docker compose --file=test/playwright/server/docker-compose.yml down
 
   test:services:build:
     desc: Build the test services
-    cmd: docker compose --file=test/playwright/server/docker-compose.yml build
+    cmds:
+      - docker compose --file=test/api/docker-compose.yml build
+      - docker compose --file=test/playwright/server/docker-compose.yml build
 
   test:
     desc: Run all test suites
@@ -111,6 +123,7 @@ tasks:
     desc: Regenerate all generated files
     cmds:
       - task: clean:generated
+      - task: proto
       - task: docs:environment
 
   regenerate:check:
@@ -122,9 +135,27 @@ tasks:
         msg: Generated files are out of date
     cmd: echo All generated files are up to date
 
+  proto:
+    desc: Compile .proto files
+    deps: [js:install-deps]
+    sources:
+      - src/api/**/*.proto
+    generates:
+      - src/api/gen/**
+    cmds:
+      - mkdir -p src/api/gen/pet-store
+      - >-
+        {{.JS_EXEC}} grpc_tools_node_protoc
+        --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto
+        --proto_path=src/api
+        --descriptor_set_out=src/api/gen/pet-store/v1.pb
+        --ts_proto_out=src/api/gen
+        --ts_proto_opt="outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false"
+        src/api/pet-store/v1.proto
+
   build:
     desc: Build the app for production
-    deps: [next:build:standalone]
+    deps: [proto, next:build:standalone]
     sources:
       - out/next/standalone/**
     generates:
@@ -133,6 +164,7 @@ tasks:
       - rm -rf out/dist
       - cp -r out/next/standalone out/dist
       - node src/build-run.ts out/dist/run.mjs
+      - cp src/health-check.ts out/dist/health-check.mts
 
   image:
     desc: Build the container image

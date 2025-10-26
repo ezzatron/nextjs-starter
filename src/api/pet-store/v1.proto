@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package org.acme.pet_store.v1;
+
+service PetStore {
+  rpc GetPets(AllPetsRequest) returns (PetsResponse);
+  rpc SearchPets(PetSearchRequest) returns (PetsResponse);
+  rpc CreatePet(PetNameRequest) returns (Pet);
+}
+
+message AllPetsRequest {}
+
+message PetSearchRequest {
+  string name = 1;
+}
+
+message PetNameRequest {
+  string name = 1;
+}
+
+message PetsResponse {
+  repeated Pet pets = 1;
+}
+
+message Pet {
+  int32 id = 1;
+  string name = 2;
+}

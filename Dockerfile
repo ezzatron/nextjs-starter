@@ -12,4 +12,7 @@ COPY --chown=nextjs:nodejs out/dist ./
 # Run as non-root user
 USER nextjs
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node health-check.mts
+
 ENTRYPOINT ["node", "run.mjs"]

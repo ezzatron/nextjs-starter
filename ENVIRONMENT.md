@@ -5,10 +5,12 @@ The `nextjs-starter` app uses **declarative environment variables** powered by
 
 [austenite]: https://github.com/ezzatron/austenite
 
-| Name                                      | Usage    | Description                       |
-| :---------------------------------------- | :------- | :-------------------------------- |
-| [`OTEL_SERVICE_NAME`](#otel_service_name) | Optional | OpenTelemetry service name        |
-| [`WEB_LISTEN_PORT`](#web_listen_port)     | Optional | Port to listen on for web traffic |
+| Name                                                | Usage    | Description                         |
+| :-------------------------------------------------- | :------- | :---------------------------------- |
+| [`OTEL_SERVICE_NAME`](#otel_service_name)           | Optional | OpenTelemetry service name          |
+| [`PET_STORE_SERVICE_HOST`](#pet_store_service_host) | Required | Kubernetes `pet-store` service host |
+| [`PET_STORE_SERVICE_PORT`](#pet_store_service_port) | Required | Kubernetes `pet-store` service port |
+| [`WEB_LISTEN_PORT`](#web_listen_port)               | Optional | Port to listen on for web traffic   |
 
 <!-- prettier-ignore-start -->
 
@@ -38,6 +40,36 @@ export OTEL_SERVICE_NAME=conquistador # any value
 
 ```sh
 export OTEL_SERVICE_NAME='alabaster parakeet' # some values may need escaping
+```
+
+## `PET_STORE_SERVICE_HOST`
+
+_Kubernetes `pet-store` service host_
+
+The `PET_STORE_SERVICE_HOST` variable is a **required** variable that takes
+**hostname** values.
+
+### Example values
+
+```sh
+export PET_STORE_SERVICE_HOST=service.example.org # a hostname
+```
+
+```sh
+export PET_STORE_SERVICE_HOST=10.0.0.11 # an IP address
+```
+
+## `PET_STORE_SERVICE_PORT`
+
+_Kubernetes `pet-store` service port_
+
+The `PET_STORE_SERVICE_PORT` variable is a **required** variable that takes
+**port number** values.
+
+### Example values
+
+```sh
+export PET_STORE_SERVICE_PORT=12345 # a port number
 ```
 
 ## `WEB_LISTEN_PORT`

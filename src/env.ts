@@ -1,11 +1,13 @@
 /* istanbul ignore file -- @preserve */
-import { networkPortNumber, string } from "austenite";
+import { kubernetesAddress, networkPortNumber, string } from "austenite";
 
 export const otelServiceName = string(
   "OTEL_SERVICE_NAME",
   "OpenTelemetry service name",
   { default: "nextjs-starter" },
 );
+
+export const petStoreAddress = kubernetesAddress("pet-store");
 
 export const webListenPort = networkPortNumber(
   "WEB_LISTEN_PORT",

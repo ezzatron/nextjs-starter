@@ -34,6 +34,7 @@ export default defineConfig({
     coverage: {
       provider: "istanbul",
       include: ["src/**/*.ts?(x)"],
+      exclude: ["src/api/gen"],
     },
     projects: [
       {

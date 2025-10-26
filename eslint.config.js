@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 /** @type {import("eslint").Linter.Config[]} */
 const config = [
   {
-    ignores: ["out", "next-env.d.ts"],
+    ignores: ["src/api/gen", "out", "next-env.d.ts"],
   },
   // @ts-expect-error @vitest/eslint-plugin types are broken
   vitest.configs.recommended,

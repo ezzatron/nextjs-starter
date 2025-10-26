@@ -16,6 +16,6 @@ export const Home: StoryObj<typeof meta> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    await expect(canvas.getByText("it works", { exact: false })).toBeVisible();
+    await expect(canvas.getByRole("heading", { name: "Home" })).toBeVisible();
   },
 };

@@ -17,10 +17,15 @@
     "@vercel/otel": "^2.1.0",
     "austenite": "^0.13.0",
     "esbuild": "^0.25.11",
+    "grpc-tools": "^1.13.0",
     "next": "^15.5.6",
+    "nice-grpc": "^2.1.13",
+    "nice-grpc-common": "^2.0.2",
+    "nice-grpc-opentelemetry": "^0.1.19",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwindcss": "^4.1.15",
+    "ts-proto": "^2.8.1",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

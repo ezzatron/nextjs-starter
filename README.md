@@ -86,7 +86,6 @@ task test:services:down
 
 ## TODO
 
-- [ ] Demo content
-- [ ] WireMock examples
+- [ ] gRPC mutations
 - [ ] Style Dictionary
 - [ ] Hosting
