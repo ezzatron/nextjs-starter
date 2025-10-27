@@ -3,7 +3,7 @@ version: "3"
 
 vars:
   APP_NAME: nextjs-starter
-  GENERATED_FILES: ENVIRONMENT.md src/api/gen
+  GENERATED_FILES: ENVIRONMENT.md src/api/gen/**
   IMAGE_NAME: ghcr.io/ezzatron/nextjs-starter
 
 includes:
