@@ -4,7 +4,7 @@ import { page } from "vitest/browser";
 import PetList from "./PetList";
 
 it("lists pets", async () => {
-  render(
+  await render(
     <PetList
       pets={[
         { id: 1, name: "Fido" },

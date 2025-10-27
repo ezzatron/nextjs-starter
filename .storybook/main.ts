@@ -17,7 +17,7 @@ const config: StorybookConfig = {
     disableTelemetry: true,
     disableWhatsNewNotifications: true,
   },
-  viteFinal: async (config) => {
+  viteFinal: (config) => {
     return {
       ...config,
       build: {

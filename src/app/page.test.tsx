@@ -4,7 +4,7 @@ import { page } from "vitest/browser";
 import HomePage from "./page";
 
 it("has a heading", async () => {
-  render(<HomePage />);
+  await render(<HomePage />);
 
   await expect
     .element(page.getByRole("heading", { name: "Home" }))

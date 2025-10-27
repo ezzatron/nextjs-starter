@@ -20,6 +20,12 @@
     "target": "esnext",
     "verbatimModuleSyntax": true
   },
-  "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "out/next/dist/types/**/*.ts"]
+  "exclude": ["node_modules", "out"],
+  "include": [
+    "**/*.js",
+    "**/*.ts",
+    "**/*.tsx",
+    "out/next/dist/types/**/*.ts",
+    ".storybook/**/*.ts"
+  ]
 }

@@ -2,6 +2,6 @@
 import { registerOTel } from "@vercel/otel";
 import { otelServiceName } from "./env";
 
-export async function register() {
+export function register() {
   registerOTel({ serviceName: otelServiceName.value() });
 }

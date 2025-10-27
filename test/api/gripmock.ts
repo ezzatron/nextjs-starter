@@ -28,7 +28,7 @@ export function createGripmockClient(adminURL: string): GripmockClient {
         body: JSON.stringify(stubs),
       });
 
-      return response.json();
+      return response.json() as Promise<string[]>;
     },
 
     purgeStubs: async () => {

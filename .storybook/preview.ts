@@ -15,6 +15,7 @@ const preview: Preview = {
     },
 
     options: {
+      /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
       // @ts-expect-error Explicit types cannot be used here, Storybook needs to serialize this function
       storySort: (a, b) => {
         // a.title and b.title are slash-separated paths
@@ -48,6 +49,7 @@ const preview: Preview = {
         // finally sort by name
         return aName.localeCompare(bName);
       },
+      /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
     },
 
     viewport: {
