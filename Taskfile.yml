@@ -37,14 +37,15 @@ tasks:
     desc: Run the app in production mode
     aliases: [start, prod]
     deps: [build]
+    dotenv: [env/run.local.env, env/run.env]
     cmd: node out/dist/run.mjs
 
   run:container:
     desc: Run the app in a container
     deps: [image]
-    env:
-      PET_STORE_SERVICE_HOST: host.docker.internal
-      PET_STORE_SERVICE_PORT: "4770"
+    vars:
+      HAS_LOCAL_ENV:
+        sh: test -f env/run.container.local.env && echo "true" || echo ""
     cmd: >-
       docker run
       --add-host=host.docker.internal:host-gateway
@@ -52,8 +53,8 @@ tasks:
       --interactive
       --tty
       --publish=8000:8000
-      --env="PET_STORE_SERVICE_HOST=$PET_STORE_SERVICE_HOST"
-      --env="PET_STORE_SERVICE_PORT=$PET_STORE_SERVICE_PORT"
+      --env-file=env/run.container.env
+      {{if .HAS_LOCAL_ENV}}--env-file=env/run.container.local.env{{end}}
       {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
 
   test:services:up:

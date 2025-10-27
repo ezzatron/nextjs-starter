@@ -9,6 +9,7 @@ tasks:
     internal: true
     desc: Run the Next.js app in development mode
     deps: [":js:install-deps"]
+    dotenv: [env/run.local.env, env/run.env]
     cmd: "{{.JS_EXEC}} next dev --turbopack"
 
   build:
@@ -49,10 +50,12 @@ tasks:
     internal: true
     desc: Start the Next.js production server
     deps: [build]
+    dotenv: [env/run.local.env, env/run.env]
     cmd: "{{.JS_EXEC}} next start"
 
   start:standalone:
     internal: true
     desc: Start the Next.js production server in standalone mode
     deps: [build:standalone]
+    dotenv: [env/run.local.env, env/run.env]
     cmd: node out/next/standalone/server.js
