@@ -6,7 +6,8 @@
     "node": "24.10.0"
   },
   "scripts": {
-    "start": "task run:dev",
+    "build": "next build",
+    "start": "next start",
     "test": "task test"
   },
   "dependencies": {
