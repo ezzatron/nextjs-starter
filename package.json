@@ -6,7 +6,7 @@
     "node": "24.10.0"
   },
   "scripts": {
-    "build": "next build && echo '{\"type\":\"commonjs\"}' > out/next/dist/package.json",
+    "build": "next build",
     "start": "next start",
     "test": "task test"
   },

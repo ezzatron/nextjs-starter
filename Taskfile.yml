@@ -113,7 +113,6 @@ tasks:
     deps: [js:install-deps]
     sources:
       - src/env.ts
-      - package.json
     generates:
       - ENVIRONMENT.md
     env:

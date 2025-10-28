@@ -26,9 +26,7 @@ tasks:
       - exclude: src/**/*.{stories,test}.*
     generates:
       - out/next/dist/**
-    cmds:
-      - "{{.JS_EXEC}} next build --turbopack"
-      - echo '{"type":"commonjs"}' > out/next/dist/package.json
+    cmd: "{{.JS_EXEC}} next build --turbopack"
 
   build:standalone:
     internal: true
