@@ -31,15 +31,22 @@ tasks:
   build:standalone:
     internal: true
     desc: Build the Next.js app for production in standalone mode
-    deps: [build]
-    preconditions:
-      - sh: test -d out/next/dist/standalone
-        msg: Standalone output not detected, please enable it in Next.js config
+    deps:
+      - for: { var: JS_NEXT_BUILD_DEPS }
+        task: ":{{.ITEM}}"
     sources:
-      - out/next/dist/standalone/**
+      - next.config.*
+      - tsconfig.json
+      - public/**
+      - src/**
+      - exclude: src/**/*.{stories,test}.*
     generates:
+      - out/next/dist/**
       - out/next/standalone/**
+    env:
+      NEXT_STANDALONE: "true"
     cmds:
+      - "{{.JS_EXEC}} next build --turbopack"
       - rm -rf out/next/standalone
       - cp -r out/next/dist/standalone out/next/standalone
       - cp out/next/dist/package.json out/next/standalone/package.json
