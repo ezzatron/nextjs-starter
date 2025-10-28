@@ -1,0 +1,12 @@
+{
+  "extends": ["github>ezzatron/renovate"],
+
+  "packageRules": [
+    {
+      "description": "Use Node.js LTS versions only",
+      "matchPackageNames": ["node"],
+
+      "ignoreUnstable": true
+    }
+  ]
+}
