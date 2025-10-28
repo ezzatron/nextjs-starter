@@ -41,6 +41,7 @@ tasks:
       - out/next/standalone/**
     cmds:
       - rm -rf out/next/standalone
+      - mkdir -p out/next
       - cp -r .next/standalone out/next/standalone
       - mkdir -p out/next/standalone/.next
       - cp -r .next/cache out/next/standalone/.next/cache
