@@ -163,7 +163,6 @@ tasks:
     cmds:
       - rm -rf out/dist
       - cp -r out/next/standalone out/dist
-      - cp src/health-check.ts out/dist/health-check.mts
 
   image:
     desc: Build the container image

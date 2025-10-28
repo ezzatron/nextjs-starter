@@ -1,4 +1,4 @@
-FROM node:24.10.0-slim
+FROM node:24.10.0
 
 WORKDIR /app
 
@@ -14,6 +14,6 @@ COPY --chown=nextjs:nodejs out/dist ./
 USER nextjs
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node health-check.mts
+  CMD curl --fail http://localhost:3000/robots.txt
 
 ENTRYPOINT ["node", "server.js"]
