@@ -25,7 +25,7 @@
     "**/*.js",
     "**/*.ts",
     "**/*.tsx",
-    "out/next/dist/types/**/*.ts",
+    ".next/types/**/*.ts",
     ".storybook/**/*.ts"
   ]
 }

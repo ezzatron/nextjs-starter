@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   {
-    ignores: ["src/api/gen", "out", "next-env.d.ts"],
+    ignores: [".next", "src/api/gen", "out", "next-env.d.ts"],
   },
   tseslint.configs.recommendedTypeChecked,
   // @ts-expect-error @vitest/eslint-plugin types are broken

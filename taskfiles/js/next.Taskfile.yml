@@ -25,7 +25,7 @@ tasks:
       - src/**
       - exclude: src/**/*.{stories,test}.*
     generates:
-      - out/next/dist/**
+      - .next/**
     cmd: "{{.JS_EXEC}} next build --turbopack"
 
   build:standalone:
@@ -33,19 +33,18 @@ tasks:
     desc: Build the Next.js app for production in standalone mode
     deps: [build]
     preconditions:
-      - sh: test -d out/next/dist/standalone
+      - sh: test -d .next/standalone
         msg: Standalone output not detected, please enable it in Next.js config
     sources:
-      - out/next/dist/standalone/**
+      - .next/standalone/**
     generates:
       - out/next/standalone/**
     cmds:
       - rm -rf out/next/standalone
-      - cp -r out/next/dist/standalone out/next/standalone
-      - cp out/next/dist/package.json out/next/standalone/package.json
-      - mkdir -p out/next/standalone/out/next/dist
-      - cp -r out/next/dist/cache out/next/standalone/out/next/dist/cache
-      - cp -r out/next/dist/static out/next/standalone/out/next/dist/static
+      - cp -r .next/standalone out/next/standalone
+      - mkdir -p out/next/standalone/.next
+      - cp -r .next/cache out/next/standalone/.next/cache
+      - cp -r .next/static out/next/standalone/.next/static
       - cp -r public out/next/standalone/
 
   start:
