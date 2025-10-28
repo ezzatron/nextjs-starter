@@ -15,7 +15,9 @@ tasks:
   build:
     internal: true
     desc: Build the Next.js app for production
-    deps: [":js:install-deps"]
+    deps:
+      - for: { var: JS_NEXT_BUILD_DEPS }
+        task: ":{{.ITEM}}"
     sources:
       - next.config.*
       - tsconfig.json

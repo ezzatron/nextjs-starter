@@ -10,7 +10,10 @@ includes:
   docker: ./taskfiles/docker
   eslint: ./taskfiles/js/eslint.Taskfile.yml
   js: ./taskfiles/js
-  next: ./taskfiles/js/next.Taskfile.yml
+  next:
+    taskfile: ./taskfiles/js/next.Taskfile.yml
+    vars:
+      JS_NEXT_BUILD_DEPS: [proto]
   playwright:
     taskfile: ./taskfiles/js/playwright.Taskfile.yml
     vars:
@@ -36,9 +39,8 @@ tasks:
   run:prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    deps: [build]
-    dotenv: [env/run.local.env, env/run.env]
-    cmd: node out/dist/server.js
+    cmds:
+      - task: next:start:standalone
 
   run:container:
     desc: Run the app in a container
@@ -155,14 +157,8 @@ tasks:
 
   build:
     desc: Build the app for production
-    deps: [proto, next:build:standalone]
-    sources:
-      - out/next/standalone/**
-    generates:
-      - out/dist/**
     cmds:
-      - rm -rf out/dist
-      - cp -r out/next/standalone out/dist
+      - task: next:build:standalone
 
   image:
     desc: Build the container image

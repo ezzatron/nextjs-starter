@@ -3,7 +3,7 @@
 /.storybook/
 /.task/
 /node_modules/
-/out/next/
+/out/next/dist/
 /out/playwright/
 /public/
 /src/
