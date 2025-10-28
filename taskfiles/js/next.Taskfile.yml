@@ -26,7 +26,9 @@ tasks:
       - exclude: src/**/*.{stories,test}.*
     generates:
       - out/next/dist/**
-    cmd: "{{.JS_EXEC}} next build --turbopack"
+    cmds:
+      - "{{.JS_EXEC}} next build --turbopack"
+      - echo '{"type":"commonjs"}' > out/next/dist/package.json
 
   build:standalone:
     internal: true
@@ -42,11 +44,11 @@ tasks:
     cmds:
       - rm -rf out/next/standalone
       - cp -r out/next/dist/standalone out/next/standalone
+      - cp out/next/dist/package.json out/next/standalone/package.json
       - mkdir -p out/next/standalone/out/next/dist
       - cp -r out/next/dist/cache out/next/standalone/out/next/dist/cache
       - cp -r out/next/dist/static out/next/standalone/out/next/dist/static
       - cp -r public out/next/standalone/
-      - 'echo ''{"type":"commonjs"}'' > out/next/standalone/package.json'
 
   start:
     internal: true
