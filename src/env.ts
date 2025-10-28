@@ -1,5 +1,6 @@
 /* istanbul ignore file -- @preserve */
-import { kubernetesAddress, networkPortNumber, string } from "austenite";
+import { kubernetesAddress, string } from "austenite";
+import { initialize } from "austenite/node";
 
 export const otelServiceName = string(
   "OTEL_SERVICE_NAME",
@@ -9,8 +10,6 @@ export const otelServiceName = string(
 
 export const petStoreAddress = kubernetesAddress("pet-store");
 
-export const webListenPort = networkPortNumber(
-  "WEB_LISTEN_PORT",
-  "Port to listen on for web traffic",
-  { default: 8000 },
-);
+if (process.env.AUSTENITE_MODE === "usage/markdown") {
+  await initialize();
+}

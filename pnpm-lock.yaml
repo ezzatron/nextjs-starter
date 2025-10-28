@@ -26,9 +26,6 @@ importers:
       austenite:
         specifier: ^0.13.0
         version: 0.13.0
-      esbuild:
-        specifier: ^0.25.11
-        version: 0.25.11
       grpc-tools:
         specifier: ^1.13.0
         version: 1.13.0

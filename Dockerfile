@@ -2,6 +2,7 @@ FROM node:24.10.0-slim
 
 WORKDIR /app
 
+ENV HOSTNAME=0.0.0.0
 ENV NODE_ENV=production
 
 # Set up a non-root user to run as
@@ -15,4 +16,4 @@ USER nextjs
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
   CMD node health-check.mts
 
-ENTRYPOINT ["node", "run.mjs"]
+ENTRYPOINT ["node", "server.js"]

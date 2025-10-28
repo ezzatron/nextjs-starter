@@ -10,7 +10,6 @@ The `nextjs-starter` app uses **declarative environment variables** powered by
 | [`OTEL_SERVICE_NAME`](#otel_service_name)           | Optional | OpenTelemetry service name          |
 | [`PET_STORE_SERVICE_HOST`](#pet_store_service_host) | Required | Kubernetes `pet-store` service host |
 | [`PET_STORE_SERVICE_PORT`](#pet_store_service_port) | Required | Kubernetes `pet-store` service port |
-| [`WEB_LISTEN_PORT`](#web_listen_port)               | Optional | Port to listen on for web traffic   |
 
 <!-- prettier-ignore-start -->
 
@@ -70,23 +69,4 @@ The `PET_STORE_SERVICE_PORT` variable is a **required** variable that takes
 
 ```sh
 export PET_STORE_SERVICE_PORT=12345 # a port number
-```
-
-## `WEB_LISTEN_PORT`
-
-_Port to listen on for web traffic_
-
-The `WEB_LISTEN_PORT` variable is an **optional** variable that takes **port
-number** values.
-
-### Default value
-
-```sh
-export WEB_LISTEN_PORT=8000 # default
-```
-
-### Example values
-
-```sh
-export WEB_LISTEN_PORT=12345 # a port number
 ```

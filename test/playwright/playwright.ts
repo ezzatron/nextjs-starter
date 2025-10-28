@@ -32,7 +32,7 @@ export const test = baseTest.extend<
           PET_STORE_SERVICE_HOST: "pet-store",
           PET_STORE_SERVICE_PORT: "4770",
         })
-        .withExposedPorts(8000)
+        .withExposedPorts(3000)
         .withWaitStrategy(Wait.forHealthCheck().withStartupTimeout(60_000))
         .start();
 
@@ -46,7 +46,7 @@ export const test = baseTest.extend<
   ],
 
   baseURL: async ({ appContainer }, use) => {
-    await use(`http://localhost:${appContainer.getMappedPort(8000)}`);
+    await use(`http://localhost:${appContainer.getMappedPort(3000)}`);
   },
 
   network: [

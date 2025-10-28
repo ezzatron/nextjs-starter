@@ -38,7 +38,7 @@ tasks:
     aliases: [start, prod]
     deps: [build]
     dotenv: [env/run.local.env, env/run.env]
-    cmd: node out/dist/run.mjs
+    cmd: node out/dist/server.js
 
   run:container:
     desc: Run the app in a container
@@ -52,7 +52,7 @@ tasks:
       --rm
       --interactive
       --tty
-      --publish=8000:8000
+      --publish=3000:3000
       --env-file=env/run.container.env
       {{if .HAS_LOCAL_ENV}}--env-file=env/run.container.local.env{{end}}
       {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
@@ -111,14 +111,13 @@ tasks:
     deps: [js:install-deps]
     sources:
       - src/env.ts
-      - src/run.ts
       - package.json
     generates:
       - ENVIRONMENT.md
     env:
       AUSTENITE_MODE: usage/markdown
       AUSTENITE_APP: "{{.APP_NAME}}"
-    cmd: node src/run.ts > ENVIRONMENT.md
+    cmd: node src/env.ts > ENVIRONMENT.md
 
   regenerate:
     desc: Regenerate all generated files
@@ -164,7 +163,6 @@ tasks:
     cmds:
       - rm -rf out/dist
       - cp -r out/next/standalone out/dist
-      - node src/build-run.ts out/dist/run.mjs
       - cp src/health-check.ts out/dist/health-check.mts
 
   image:
