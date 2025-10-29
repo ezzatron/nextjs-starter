@@ -3,6 +3,13 @@
 
   "packageRules": [
     {
+      "description": "Disable major updates for Next.js",
+      "matchPackageNames": ["eslint-config-next", "next"],
+      "matchUpdateTypes": ["major"],
+
+      "enabled": false
+    },
+    {
       "description": "Disable major updates for Node.js",
       "matchPackageNames": ["node"],
       "matchUpdateTypes": ["major"],
