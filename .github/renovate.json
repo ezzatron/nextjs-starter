@@ -3,10 +3,11 @@
 
   "packageRules": [
     {
-      "description": "Use Node.js LTS versions only",
+      "description": "Disable major updates for Node.js",
       "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["major"],
 
-      "ignoreUnstable": true
+      "enabled": false
     }
   ]
 }
