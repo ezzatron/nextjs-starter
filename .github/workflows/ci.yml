@@ -82,7 +82,7 @@ jobs:
           tar -cf out/build-artifacts.tar --files-from=out/build-manifest
       - name: Upload build artifacts
         if: "!cancelled()"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: build-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload package manager files
         if: "!cancelled()"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: package-manager-files-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
@@ -124,7 +124,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-${{ needs.build.outputs.artifact-suffix }}
           path: out
@@ -143,7 +143,7 @@ jobs:
 
       - name: Upload Vitest screenshots
         if: "!cancelled()"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: vitest-screenshots-${{ needs.build.outputs.artifact-suffix }}
           retention-days: "7"
@@ -173,7 +173,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-${{ needs.build.outputs.artifact-suffix }}
           path: out
@@ -192,7 +192,7 @@ jobs:
 
       - name: Upload Playwright report
         if: "!cancelled()"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: playwright-report-${{ needs.build.outputs.artifact-suffix }}
           retention-days: "7"
@@ -222,7 +222,7 @@ jobs:
         uses: go-task/setup-task@v1
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: build-${{ needs.build.outputs.artifact-suffix }}
           path: out
