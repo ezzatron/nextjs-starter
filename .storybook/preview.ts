@@ -102,12 +102,16 @@ const preview: Preview = {
       modes: {
         mobile: {
           viewport: Object.keys(MINIMAL_VIEWPORTS).find(
-            (k) => MINIMAL_VIEWPORTS[k].name === "Small mobile",
+            (k) =>
+              MINIMAL_VIEWPORTS[k as unknown as keyof typeof MINIMAL_VIEWPORTS]
+                .name === "Small mobile",
           ),
         },
         desktop: {
           viewport: Object.keys(MINIMAL_VIEWPORTS).find(
-            (k) => MINIMAL_VIEWPORTS[k].name === "Desktop",
+            (k) =>
+              MINIMAL_VIEWPORTS[k as unknown as keyof typeof MINIMAL_VIEWPORTS]
+                .name === "Desktop",
           ),
         },
       },
