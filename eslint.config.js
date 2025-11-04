@@ -18,8 +18,9 @@ export default defineConfig([
   tseslint.configs.recommendedTypeChecked,
   // @ts-expect-error @vitest/eslint-plugin types are broken
   vitest.configs.recommended,
-  ...storybook.configs["flat/recommended"],
-  ...compat.config({
+  // @ts-expect-error eslint-plugin-storybook types are broken
+  storybook.configs["flat/recommended"],
+  compat.config({
     extends: [
       "eslint:recommended",
       "next/core-web-vitals",
