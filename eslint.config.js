@@ -16,9 +16,7 @@ export default defineConfig([
     ignores: [".next", "src/api/gen", "out", "next-env.d.ts"],
   },
   tseslint.configs.recommendedTypeChecked,
-  // @ts-expect-error @vitest/eslint-plugin types are broken
   vitest.configs.recommended,
-  // @ts-expect-error eslint-plugin-storybook types are broken
   storybook.configs["flat/recommended"],
   compat.config({
     extends: [
