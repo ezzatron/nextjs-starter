@@ -194,7 +194,7 @@ jobs:
           name: build-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
           overwrite: "true"
-          if-no-files-found: error
+          if-no-files-found: ignore
           path: out
 
       - name: Upload package manager files
@@ -216,5 +216,5 @@ jobs:
           name: playwright-report-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
           overwrite: "true"
-          if-no-files-found: error
+          if-no-files-found: ignore
           path: out/playwright/report/html
