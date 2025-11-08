@@ -13,6 +13,8 @@ concurrency:
 
 env:
   FORCE_COLOR: "true"
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_REPOSITORY: ezzatron/nextjs-starter
 
 jobs:
   lint:
@@ -146,7 +148,7 @@ jobs:
         id: image-meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}
+          images: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
 
       - name: Build and push image
         id: image-push
@@ -165,7 +167,7 @@ jobs:
       - name: Generate attestation
         uses: actions/attest-build-provenance@v3
         with:
-          subject-name: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}
+          subject-name: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
           subject-digest: ${{ steps.image-push.outputs.digest }}
           push-to-registry: true
 
@@ -174,7 +176,7 @@ jobs:
 
       - name: Playwright
         env:
-          IMAGE_REFERENCE: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}@${{ steps.image-push.outputs.digest }}
+          IMAGE_REFERENCE: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}@${{ steps.image-push.outputs.digest }}
         run: task test:playwright:ci
 
       - name: Stop test services
