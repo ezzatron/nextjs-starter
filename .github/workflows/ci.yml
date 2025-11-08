@@ -108,6 +108,7 @@ jobs:
       attestations: write
       contents: read
       id-token: write
+      packages: write
 
     outputs:
       image-digest: ${{ steps.image-push.outputs.digest }}
