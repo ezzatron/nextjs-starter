@@ -147,7 +147,6 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}
-          tags: type=sha,format=long,prefix=Build-${{ github.run_number }}-
 
       - name: Build and push image
         id: image-push
