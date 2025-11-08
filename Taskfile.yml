@@ -299,6 +299,7 @@ tasks:
     cmds:
       - "{{.JS_EXEC}} next build --turbopack"
       - rm -rf out/next/standalone
+      - mkdir -p out/next
       - cp -r .next/standalone out/next/standalone
       - mkdir -p out/next/standalone/.next
       - cp -r .next/cache out/next/standalone/.next/cache
