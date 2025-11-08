@@ -1,6 +1,8 @@
 import type { Preview } from "@storybook/nextjs-vite";
 import { MINIMAL_VIEWPORTS } from "storybook/viewport";
 
+import "@/app/globals.css";
+
 const preview: Preview = {
   parameters: {
     controls: {

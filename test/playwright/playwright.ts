@@ -22,19 +22,20 @@ export const test = baseTest.extend<
 >({
   appContainer: [
     async ({ network }, use) => {
-      const container = await GenericContainer.fromDockerfile(
-        resolve(import.meta.dirname, "../.."),
-      ).build();
+      if (!process.env.IMAGE_REFERENCE) {
+        throw new Error("IMAGE_REFERENCE environment variable is required");
+      }
 
-      const started = await container
+      const container = new GenericContainer(process.env.IMAGE_REFERENCE)
         .withNetwork(network)
         .withEnvironment({
           PET_STORE_SERVICE_HOST: "pet-store",
           PET_STORE_SERVICE_PORT: "4770",
         })
         .withExposedPorts(3000)
-        .withWaitStrategy(Wait.forHealthCheck().withStartupTimeout(60_000))
-        .start();
+        .withWaitStrategy(Wait.forHealthCheck().withStartupTimeout(60_000));
+
+      const started = await container.start();
 
       try {
         await use(started);

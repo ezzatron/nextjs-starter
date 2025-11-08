@@ -1,50 +1,49 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+run: when_changed
+
 vars:
   APP_NAME: nextjs-starter
-  GENERATED_FILES: ENVIRONMENT.md src/api/gen/**
   IMAGE_NAME: ghcr.io/ezzatron/nextjs-starter
+  IMAGE_TAG: dev
+  JS_EXEC: pnpm exec --
+  PW_TEST_CONNECT_EXPOSE_NETWORK: <loopback>
+  PW_TEST_CONNECT_WS_ENDPOINT: ws://localhost:7357
+  PW_TEST_PROJECTS: []
+  VITEST_PROJECTS: []
 
-includes:
-  docker: ./taskfiles/docker
-  eslint: ./taskfiles/js/eslint.Taskfile.yml
-  js: ./taskfiles/js
-  next:
-    taskfile: ./taskfiles/js/next.Taskfile.yml
-    vars:
-      JS_NEXT_BUILD_DEPS: [proto]
-  playwright:
-    taskfile: ./taskfiles/js/playwright.Taskfile.yml
-    vars:
-      JS_PW_TEST_DEPS: [build]
-  prettier: ./taskfiles/js/prettier.Taskfile.yml
-  storybook: ./taskfiles/js/storybook.Taskfile.yml
-  tsc: ./taskfiles/js/tsc.Taskfile.yml
-  vitest: ./taskfiles/js/vitest.Taskfile.yml
+env:
+  IMAGE_REFERENCE: "{{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
+  NEXT_TELEMETRY_DISABLED: "1"
 
 tasks:
   install-deps:
     desc: Install dependencies
     aliases: [install, i, deps]
-    cmds:
-      - task: js:install-deps
+    sources:
+      - pnpm-lock.yaml
+    generates:
+      - node_modules/**
+    cmd: pnpm install --frozen-lockfile
 
   run:dev:
     desc: Run the app in development mode
     aliases: [run, dev]
-    cmds:
-      - task: next:dev
+    deps: [install-deps]
+    dotenv: [env/run.local.env, env/run.env]
+    cmd: "{{.JS_EXEC}} next dev --turbopack"
 
   run:prod:
     desc: Run the app in production mode
     aliases: [start, prod]
-    cmds:
-      - task: next:start:standalone
+    deps: [build:next]
+    dotenv: [env/run.local.env, env/run.env]
+    cmd: node out/next/standalone/server.js
 
   run:container:
     desc: Run the app in a container
-    deps: [image]
+    deps: [build:image]
     vars:
       HAS_LOCAL_ENV:
         sh: test -f env/run.container.local.env && echo "true" || echo ""
@@ -58,6 +57,156 @@ tasks:
       --env-file=env/run.container.env
       {{if .HAS_LOCAL_ENV}}--env-file=env/run.container.local.env{{end}}
       {{.IMAGE_NAME}}:{{.IMAGE_TAG}}
+
+  open:
+    desc: Open the app in development mode in the default browser
+    aliases: [browse]
+    cmd:
+      task: util:open
+      vars:
+        TARGET: http://localhost:3000
+
+  storybook:dev:
+    desc: Run Storybook in development mode
+    aliases: [storybook]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} storybook dev --port=6006"
+
+  storybook:build:
+    desc: Build Storybook
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} storybook build --output-dir=out/storybook"
+
+  test:
+    desc: Run all test suites
+    aliases: [t, default]
+    cmds:
+      - task: test:vitest
+      - task: test:playwright
+
+  test:playwright:
+    desc: Run Playwright tests
+    aliases: [playwright]
+    deps: [install-deps, build:image]
+    env:
+      PW_TEST_CONNECT_WS_ENDPOINT: "{{.PW_TEST_CONNECT_WS_ENDPOINT}}"
+      PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.PW_TEST_CONNECT_EXPOSE_NETWORK}}"
+    cmd: >-
+      {{.JS_EXEC}} playwright test
+      {{if .PW_TEST_HEADED}}--headed{{end}}
+      {{if .PW_TEST_IGNORE_SNAPSHOTS}}--ignore-snapshots{{end}}
+      {{if .PW_TEST_UI}}--ui{{end}}
+      {{if .PW_TEST_FORBID_ONLY}}--forbid-only{{end}}
+      {{range .PW_TEST_PROJECTS}} --project="{{.}}"{{end}}
+
+  test:playwright:all:
+    desc: Run Playwright tests for all projects
+    aliases: [playwright:all]
+    cmds:
+      - task: test:playwright
+        vars:
+          PW_TEST_PROJECTS:
+            - chromium
+            - firefox
+            - webkit
+
+  test:playwright:headed:
+    desc: Run Playwright tests in headed mode
+    aliases: [playwright:headed]
+    cmds:
+      - task: test:playwright
+        vars:
+          PW_TEST_CONNECT_EXPOSE_NETWORK: ""
+          PW_TEST_CONNECT_WS_ENDPOINT: ""
+          PW_TEST_HEADED: true
+          PW_TEST_IGNORE_SNAPSHOTS: true
+
+  test:playwright:ui:
+    desc: Run Playwright tests in UI mode
+    aliases: [playwright:ui]
+    cmds:
+      - task: test:playwright
+        vars:
+          PW_TEST_UI: true
+
+  test:playwright:report:
+    desc: Show the HTML report from the last test run
+    aliases: [playwright:report]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} playwright show-report out/playwright/report/html"
+
+  test:playwright:ci:
+    desc: Run Playwright tests for continuous integration
+    deps: [install-deps] # Image is expected to be pre-built under CI
+    env:
+      PW_TEST_CONNECT_WS_ENDPOINT: "{{.PW_TEST_CONNECT_WS_ENDPOINT}}"
+      PW_TEST_CONNECT_EXPOSE_NETWORK: "{{.PW_TEST_CONNECT_EXPOSE_NETWORK}}"
+    cmd: >-
+      {{.JS_EXEC}} playwright test
+      --forbid-only
+      --project=chromium
+      --project=firefox
+      --project=webkit
+
+  test:vitest:
+    desc: Run Vitest tests
+    aliases: [vitest]
+    deps: [install-deps]
+    cmd: >-
+      {{.JS_EXEC}} vitest
+      {{if .VITEST_UI}}--ui{{end}}
+      {{if .VITEST_WATCH}}--watch{{end}}
+      {{if .VITEST_COVERAGE}}--coverage.enabled --coverage.reportsDirectory=out/vitest/coverage{{end}}
+      {{if .VITEST_COVERAGE}}--coverage.reporter=lcov --coverage.reporter=text{{end}}
+      {{if .VITEST_FORBID_ONLY}}--allowOnly=false{{end}}
+      {{range .VITEST_PROJECTS}} --project="{{.}}"{{end}}
+
+  test:vitest:watch:
+    desc: Run Vitest tests in watch mode
+    aliases: [vitest:watch]
+    cmds:
+      - task: test:vitest
+        vars:
+          VITEST_WATCH: true
+
+  test:vitest:ui:
+    desc: Run Vitest tests in UI mode
+    aliases: [vitest:ui]
+    cmds:
+      - task: test:vitest
+        vars:
+          VITEST_UI: true
+          VITEST_WATCH: true
+
+  test:vitest:coverage:
+    desc: Run Vitest tests with coverage
+    aliases: [test:coverage, vitest:coverage, coverage]
+    cmds:
+      - task: test:vitest
+        vars:
+          VITEST_COVERAGE: true
+
+  test:vitest:coverage:open:
+    desc: Open the Vitest coverage report
+    aliases: [test:coverage:open, vitest:coverage:open, coverage:open]
+    cmds:
+      - task: util:open
+        vars:
+          TARGET: out/vitest/coverage/lcov-report/index.html
+
+  test:vitest:ci:
+    desc: Run Vitest tests for continuous integration
+    cmds:
+      - task: test:vitest
+        vars:
+          VITEST_COVERAGE: true
+          VITEST_FORBID_ONLY: true
+          VITEST_PROJECTS:
+            - chromium
+            - firefox
+            - server
+            - storybook
+            - webkit
 
   test:services:up:
     desc: Start the test services
@@ -78,67 +227,126 @@ tasks:
       - docker compose --file=test/api/docker-compose.yml build
       - docker compose --file=test/playwright/server/docker-compose.yml build
 
-  test:
-    desc: Run all test suites
-    aliases: [t, default]
-    cmds:
-      - task: vitest:test
-      - task: build
-      - task: playwright:test
-
-  coverage:
-    desc: Run tests with coverage
-    cmds:
-      - task: vitest:coverage
-
-  coverage:open:
-    desc: Open the coverage report
-    cmds:
-      - task: vitest:coverage:open
-
   lint:
     desc: Run formatting, linting, and type checking
+    aliases: [l]
     cmds:
-      - task: prettier:write
-      - task: eslint:check
-      - task: tsc:typecheck
+      - task: lint:prettier:write
+      - task: lint:eslint:check
+      - task: lint:typecheck
 
-  storybook:
-    desc: Run Storybook in development mode
-    cmds:
-      - task: storybook:dev
+  lint:eslint:check:
+    desc: Check linting with ESLint, allowing warnings
+    aliases: [eslint:check, eslint]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} eslint"
 
-  docs:environment:
-    desc: Generate environment variable usage documentation
-    deps: [js:install-deps]
-    sources:
-      - src/env.ts
-    generates:
-      - ENVIRONMENT.md
-    env:
-      AUSTENITE_MODE: usage/markdown
-      AUSTENITE_APP: "{{.APP_NAME}}"
-    cmd: node src/env.ts > ENVIRONMENT.md
+  lint:eslint:strict:
+    desc: Check linting with ESLint, failing on warnings
+    aliases: [eslint:strict]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} eslint --max-warnings=0"
 
-  regenerate:
-    desc: Regenerate all generated files
-    cmds:
-      - task: clean:generated
-      - task: proto
-      - task: docs:environment
+  lint:prettier:check:
+    desc: Check formatting with Prettier
+    aliases: [prettier:check]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} prettier --check ."
 
-  regenerate:check:
-    internal: true
+  lint:prettier:write:
+    desc: Automatically fix formatting with Prettier
+    aliases: [prettier:write]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} prettier --write ."
+
+  lint:generated:
     desc: Check if all generated files are up to date
     deps: [regenerate]
     preconditions:
-      - sh: git diff --exit-code -- {{.GENERATED_FILES}}
+      - sh: git diff --exit-code -- ENVIRONMENT.md src/api/gen
         msg: Generated files are out of date
     cmd: echo All generated files are up to date
 
-  proto:
+  lint:typecheck:
+    desc: Check types with TypeScript
+    aliases: [typecheck]
+    deps: [install-deps]
+    cmd: "{{.JS_EXEC}} tsc --noEmit"
+
+  regenerate:
+    desc: Regenerate all generated files
+    aliases: [regen]
+    cmds:
+      - task: clean:generated
+      - task: build:proto
+      - task: build:environment
+
+  build:next:
+    desc: Build the app for production
+    aliases: [build]
+    deps: [build:proto]
+    sources:
+      - public/**
+      - src/**
+      - next.config.ts
+      - pnpm-lock.yaml
+      - postcss.config.js
+      - tsconfig.json
+      - exclude: src/**/*.{stories,test}.*
+    generates:
+      - .next/**
+      - out/next/standalone/**
+    cmds:
+      - "{{.JS_EXEC}} next build --turbopack"
+      - rm -rf out/next/standalone
+      - cp -r .next/standalone out/next/standalone
+      - mkdir -p out/next/standalone/.next
+      - cp -r .next/cache out/next/standalone/.next/cache
+      - cp -r .next/static out/next/standalone/.next/static
+      - cp -r public out/next/standalone/
+
+  build:analyze:
+    desc: Analyze the production app bundles
+    aliases: [analyze]
+    deps: [install-deps]
+    env:
+      ANALYZE: "true"
+    cmds:
+      - "{{.JS_EXEC}} next build --webpack"
+      - cp -r .next/analyze out/next/analyze
+      - rm -rf .next
+
+  build:analyze:open:
+    desc: Analyze the production app bundles
+    aliases: [analyze:open]
+    cmds:
+      - task: util:open
+        vars:
+          TARGET: out/next/analyze/client.html
+
+  build:image:
+    desc: Build the container image
+    aliases: [image, docker]
+    deps: [build:next]
+    method: timestamp
+    sources:
+      - .dockerfile
+      - Dockerfile
+      - out/next/standalone/**
+    generates:
+      - out/image.touch
+    cmds:
+      - >-
+        docker buildx build --pull --load
+        --tag="{{.IMAGE_NAME}}:{{.IMAGE_TAG}}"
+        .
+      - mkdir -p out
+      - touch out/image.touch
+
+  build:proto:
     desc: Compile .proto files
-    deps: [js:install-deps]
+    aliases: [proto]
+    deps: [install-deps]
     sources:
       - src/api/**/*.proto
     generates:
@@ -153,107 +361,71 @@ tasks:
         --ts_proto_out=src/api/gen
         --ts_proto_opt="outputServices=nice-grpc,outputServices=generic-definitions,useExactTypes=false"
         src/api/pet-store/v1.proto
+      - node src/api/strip-protoc-versions.ts
 
-  build:
-    desc: Build the app for production
-    cmds:
-      - task: next:build:standalone
-
-  image:
-    desc: Build the container image
-    aliases: [docker]
-    deps: [build]
-    cmds:
-      - task: docker:build
+  build:environment:
+    desc: Generate environment variable usage documentation
+    deps: [install-deps]
+    sources:
+      - src/env.ts
+    generates:
+      - ENVIRONMENT.md
+    env:
+      AUSTENITE_MODE: usage/markdown
+      AUSTENITE_APP: "{{.APP_NAME}}"
+    cmd: node src/env.ts > ENVIRONMENT.md
 
   pre-commit:
     desc: Run all pre-commit checks
     aliases: [pc]
     cmds:
-      - task: regenerate:check
-      - task: prettier:write
-      - task: eslint:no-warnings
-      - task: tsc:typecheck
-      - task: vitest:test
+      - task: lint:generated
+      - task: lint:prettier:write
+      - task: lint:eslint:strict
+      - task: lint:typecheck
+      - task: test:vitest
         vars:
-          JS_VITEST_FORBID_ONLY: true
-          JS_VITEST_PROJECTS:
+          VITEST_FORBID_ONLY: true
+          VITEST_PROJECTS:
             - chromium
             - firefox
             - server
             - storybook
             - webkit
-      - task: build
-      - task: playwright:test
+      - task: build:image
+      - task: test:playwright
         vars:
-          JS_PW_TEST_FORBID_ONLY: true
-          JS_PW_TEST_PROJECTS:
+          PW_TEST_FORBID_ONLY: true
+          PW_TEST_PROJECTS:
             - chromium
             - firefox
             - webkit
-      - task: docker:build
-
-  clean:generated:
-    desc: Clean all generated files
-    cmd: rm -rf {{.GENERATED_FILES}}
 
   clean:ignored:
     desc: Clean all ignored files
     aliases: [clean]
-    cmd: git clean -fdx
+    cmds:
+      - rm -rf node_modules # Git has trouble with this for some reason
+      - git clean -fdx
+
+  clean:generated:
+    desc: Clean all generated files
+    cmd: rm -rf ENVIRONMENT.md src/api/gen
 
   clean:all:
     desc: Clean all generated and ignored files
     cmds:
-      - task: clean:generated
       - task: clean:ignored
+      - task: clean:generated
 
-  ci:regenerate:
-    desc: Check generated files for continuous integration
+  util:open:
+    desc: Open the supplied file or URL with the default application
+    requires:
+      vars: [TARGET]
     cmds:
-      - task: regenerate:check
-
-  ci:build:
-    desc: Build the app for continuous integration
-    cmds:
-      - task: build
-
-  ci:vitest:
-    desc: Run Vitest tests for continuous integration
-    cmds:
-      - task: vitest:test
-        vars:
-          JS_VITEST_COVERAGE: true
-          JS_VITEST_FORBID_ONLY: true
-          JS_VITEST_PROJECTS:
-            - chromium
-            - firefox
-            - server
-            - storybook
-            - webkit
-
-  ci:playwright:
-    desc: Run Playwright tests for continuous integration
-    cmds:
-      - task: playwright:test
-        vars:
-          JS_PW_TEST_FORBID_ONLY: true
-          JS_PW_TEST_PROJECTS:
-            - chromium
-            - firefox
-            - webkit
-
-  ci:eslint:
-    desc: Run ESLint for continuous integration
-    cmds:
-      - task: eslint:no-warnings
-
-  ci:typecheck:
-    desc: Run tsc type checking for continuous integration
-    cmds:
-      - task: tsc:typecheck
-
-  ci:prettier:
-    desc: Run Prettier check for continuous integration
-    cmds:
-      - task: prettier:check
+      - platforms: [darwin]
+        cmd: open "{{.TARGET}}"
+      - platforms: [linux]
+        cmd: xdg-open "{{.TARGET}}"
+      - platforms: [windows]
+        cmd: cmd /c start "{{.TARGET}}"

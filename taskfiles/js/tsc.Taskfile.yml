@@ -1,9 +1,0 @@
-# yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: "3"
-
-tasks:
-  typecheck:
-    internal: true
-    desc: Check types with TypeScript
-    deps: [":js:install-deps"]
-    cmd: "{{.JS_EXEC}} tsc --noEmit"

@@ -1,7 +1,12 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
 
-const config: NextConfig = {
+export default createConfig({
   output: "standalone",
-};
+});
 
-export default config;
+function createConfig(config: NextConfig): NextConfig {
+  return process.env.ANALYZE === "true"
+    ? bundleAnalyzer({ openAnalyzer: false })(config)
+    : config;
+}

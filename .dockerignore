@@ -1,11 +1,2 @@
-# Can't use a simple exclusion because of https://github.com/testcontainers/testcontainers-node/issues/775
-/.github/
-/.next/
-/.storybook/
-/.task/
-/node_modules/
-/out/playwright/
-/public/
-/src/
-/taskfiles/
-/test/
+*
+!/out/next/standalone/

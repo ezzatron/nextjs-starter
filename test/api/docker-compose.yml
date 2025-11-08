@@ -5,7 +5,10 @@ services:
     image: bavix/gripmock:3.4.2
     volumes:
       - ../../src/api/gen:/proto:ro
-    command: /proto/pet-store/v1.pb
+      - ./stubs:/stubs:ro
+    command: >-
+      --stub=/stubs
+      /proto/pet-store/v1.pb
     network_mode: bridge
     ports:
       - 4770:4770

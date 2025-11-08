@@ -1,9 +1,17 @@
-minimumReleaseAge: 4320 # 3 days in minutes
 nodeLinker: hoisted
 packageManagerStrictVersion: true
 
+allowedDeprecatedVersions:
+  # Transient dependencies via grpc-tools -> @mapbox/node-pre-gyp
+  # See https://github.com/grpc/grpc-node/issues/2968
+  are-we-there-yet: "2"
+  gauge: "3"
+  glob: "7"
+  inflight: "1"
+  npmlog: "5"
+  rimraf: "3"
+
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
   - cpu-features
   - esbuild
   - grpc-tools
@@ -11,7 +19,3 @@ onlyBuiltDependencies:
   - sharp
   - ssh2
   - unrs-resolver
-
-minimumReleaseAgeExclude:
-  - "*vitest*"
-  - "*storybook*"

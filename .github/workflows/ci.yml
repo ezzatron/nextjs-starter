@@ -6,22 +6,111 @@ on:
   schedule:
     - cron: 0 14 * * 0 # Every Sunday, at midnight AEST
 
+# Cancel any in-progress runs for the same workflow and ref
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   FORCE_COLOR: "true"
 
 jobs:
-  build:
-    name: Build
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
-    outputs:
-      artifact-suffix: ${{ steps.artifact-suffix.outputs.suffix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: pnpm
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Install dependencies
+        run: task install-deps
+
+      - name: ESLint
+        run: task lint:eslint:strict
+
+      - name: Typecheck
+        run: task lint:typecheck
+
+      - name: Prettier
+        run: task lint:prettier:check
+
+      - name: Check generated files
+        run: task lint:generated
+
+  vitest:
+    name: Vitest
+    runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          cache: pnpm
+          node-version-file: .node-version
+
+      - name: Set up Task
+        uses: go-task/setup-task@v1
+
+      - name: Install dependencies
+        run: task install-deps
+
+      - name: Start test services
+        run: task test:services:up
+
+      - name: Vitest
+        run: task test:vitest:ci
+
+      - name: Stop test services
+        if: always()
+        run: task test:services:down
+
       - name: Build artifact suffix
+        if: "!cancelled()"
         id: artifact-suffix
         run: echo "suffix=${GITHUB_REPOSITORY//\//-}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
 
+      - name: Upload Vitest screenshots
+        if: "!cancelled()"
+        uses: actions/upload-artifact@v5
+        with:
+          name: vitest-screenshots-${{ steps.artifact-suffix.outputs.suffix }}
+          retention-days: "7"
+          overwrite: "true"
+          if-no-files-found: ignore
+          path: out/vitest/browser/screenshots
+
+  build:
+    name: Build / Playwright
+    runs-on: ubuntu-latest
+
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+
+    outputs:
+      image-digest: ${{ steps.image-push.outputs.digest }}
+
+    steps:
       - name: Checkout
         uses: actions/checkout@v5
 
@@ -47,22 +136,36 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Authenticate to Google Cloud
+        id: gcloud-auth
+        uses: google-github-actions/auth@v3
+        with:
+          token_format: access_token
+          workload_identity_provider: ${{ vars.IMAGE_REGISTRY_WIF_PROVIDER }}
+          service_account: ${{ vars.IMAGE_REGISTRY_SERVICE_ACCOUNT }}
+
+      - name: Authenticate to image registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.IMAGE_REGISTRY }}
+          username: oauth2accesstoken
+          password: ${{ steps.gcloud-auth.outputs.access_token }}
+
       - name: Install dependencies
         run: task install-deps
 
-      - name: Check generated files
-        run: task ci:regenerate
-
       - name: Build
-        run: task ci:build
+        run: task build:next
 
       - name: Extract image metadata
         id: image-meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}
+          tags: type=sha,format=long,prefix=Build-${{ github.run_number }}-
 
-      - name: Build image
+      - name: Build and push image
+        id: image-push
         uses: docker/build-push-action@v6
         env:
           DOCKER_BUILD_RECORD_RETENTION_DAYS: "7"
@@ -70,16 +173,35 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           context: .
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.image-meta.outputs.tags }}
           labels: ${{ steps.image-meta.outputs.labels }}
 
-      # This is necessary to preserve executable permissions
-      - name: Archive build artifacts
+      - name: Generate attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}
+          subject-digest: ${{ steps.image-push.outputs.digest }}
+          push-to-registry: true
+
+      - name: Start test services
+        run: task test:services:up
+
+      - name: Playwright
+        env:
+          IMAGE_REFERENCE: ${{ vars.IMAGE_REGISTRY }}/${{ vars.IMAGE_REPOSITORY }}@${{ steps.image-push.outputs.digest }}
+        run: task test:playwright:ci
+
+      - name: Stop test services
+        if: always()
+        run: task test:services:down
+
+      - name: Build artifact suffix
         if: "!cancelled()"
-        run: |
-          git ls-files --others --ignored --exclude-standard > out/build-manifest
-          tar -cf out/build-artifacts.tar --files-from=out/build-manifest
+        id: artifact-suffix
+        run: echo "suffix=${GITHUB_REPOSITORY//\//-}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
+
       - name: Upload build artifacts
         if: "!cancelled()"
         uses: actions/upload-artifact@v5
@@ -88,7 +210,7 @@ jobs:
           retention-days: "7"
           overwrite: "true"
           if-no-files-found: error
-          path: out/build-artifacts.tar
+          path: out
 
       - name: Upload package manager files
         if: "!cancelled()"
@@ -102,138 +224,12 @@ jobs:
             package.json
             pnpm-lock.yaml
 
-  vitest:
-    name: Vitest
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          cache: pnpm
-          node-version-file: .node-version
-
-      - name: Set up Task
-        uses: go-task/setup-task@v1
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: build-${{ needs.build.outputs.artifact-suffix }}
-          path: out
-      - name: Extract build artifacts
-        run: tar -xf out/build-artifacts.tar
-
-      - name: Start test services
-        run: task test:services:up
-
-      - name: Vitest
-        run: task ci:vitest
-
-      - name: Stop test services
-        if: always()
-        run: task test:services:down
-
-      - name: Upload Vitest screenshots
-        if: "!cancelled()"
-        uses: actions/upload-artifact@v5
-        with:
-          name: vitest-screenshots-${{ needs.build.outputs.artifact-suffix }}
-          retention-days: "7"
-          overwrite: "true"
-          if-no-files-found: ignore
-          path: out/vitest/browser/screenshots
-
-  playwright:
-    name: Playwright
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          cache: pnpm
-          node-version-file: .node-version
-
-      - name: Set up Task
-        uses: go-task/setup-task@v1
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: build-${{ needs.build.outputs.artifact-suffix }}
-          path: out
-      - name: Extract build artifacts
-        run: tar -xf out/build-artifacts.tar
-
-      - name: Start test services
-        run: task test:services:up
-
-      - name: Playwright
-        run: task ci:playwright
-
-      - name: Stop test services
-        if: always()
-        run: task test:services:down
-
       - name: Upload Playwright report
         if: "!cancelled()"
         uses: actions/upload-artifact@v5
         with:
-          name: playwright-report-${{ needs.build.outputs.artifact-suffix }}
+          name: playwright-report-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
           overwrite: "true"
           if-no-files-found: error
           path: out/playwright/report/html
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          cache: pnpm
-          node-version-file: .node-version
-
-      - name: Set up Task
-        uses: go-task/setup-task@v1
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v6
-        with:
-          name: build-${{ needs.build.outputs.artifact-suffix }}
-          path: out
-      - name: Extract build artifacts
-        run: tar -xf out/build-artifacts.tar
-
-      - name: ESLint
-        run: task ci:eslint
-
-      - name: Typecheck
-        run: task ci:typecheck
-
-      - name: Prettier
-        run: task ci:prettier

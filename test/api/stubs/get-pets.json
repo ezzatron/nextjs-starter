@@ -1,0 +1,20 @@
+{
+  "$schema": "https://bavix.github.io/gripmock/schema/stub.json",
+  "service": "PetStore",
+  "method": "GetPets",
+  "input": { "equals": {} },
+  "output": {
+    "data": {
+      "pets": [
+        { "id": "1", "name": "Pinchy" },
+        { "id": "2", "name": "Plopper" },
+        { "id": "3", "name": "Santa's Little Helper" },
+        { "id": "4", "name": "Snowball II" },
+        { "id": "5", "name": "Snowball V" },
+        { "id": "6", "name": "Snowball" },
+        { "id": "7", "name": "Stampy" }
+      ]
+    },
+    "error": ""
+  }
+}

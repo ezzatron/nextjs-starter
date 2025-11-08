@@ -4,6 +4,7 @@ const isCI = process.env.CI === "true";
 const isDefaultProjects =
   process.argv.includes("test") &&
   !process.argv.some((a) => /^--project\b/.test(a));
+const isUI = process.argv.includes("--ui");
 
 export default defineConfig({
   testDir: "test/playwright",
@@ -34,7 +35,7 @@ export default defineConfig({
         },
       },
     },
-    ...(isDefaultProjects
+    ...(isDefaultProjects && !isUI
       ? []
       : ([
           {
