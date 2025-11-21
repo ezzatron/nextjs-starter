@@ -37,7 +37,7 @@ importers:
         version: 15.5.6(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.56.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       nice-grpc:
         specifier: ^2.1.13
-        version: 2.1.13
+        version: 2.1.14
       nice-grpc-common:
         specifier: ^2.0.2
         version: 2.0.2
@@ -447,10 +447,6 @@ packages:
   '@eslint/plugin-kit@0.4.1':
     resolution: {integrity: sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@grpc/grpc-js@1.14.0':
-    resolution: {integrity: sha512-N8Jx6PaYzcTRNzirReJCtADVoq4z7+1KQ4E70jTg/koQiMoUSN1kbNjPOqpPbhMFhfU1/l7ixspPl8dNY+FoUg==}
-    engines: {node: '>=12.10.0'}
 
   '@grpc/grpc-js@1.14.1':
     resolution: {integrity: sha512-sPxgEWtPUR3EnRJCEtbGZG2iX8LQDUls2wUS3o27jg07KqJFMq6YDeWvMo1wfpmy3rqRdS0rivpLwhqQtEyCuQ==}
@@ -3116,8 +3112,8 @@ packages:
   nice-grpc-opentelemetry@0.1.19:
     resolution: {integrity: sha512-rjYVFbmSTE/g3XtxIh37PgEtE1ZOcwFoSHeLBCMRz9GAeGwZd23020QObgElF2UgU6kn1wpH8taWdprNr+3wfg==}
 
-  nice-grpc@2.1.13:
-    resolution: {integrity: sha512-IkXNok2NFyYh0WKp1aJFwFV3Ue2frBkJ16ojrmgX3Tc9n0g7r0VU+ur3H/leDHPPGsEeVozdMynGxYT30k3D/Q==}
+  nice-grpc@2.1.14:
+    resolution: {integrity: sha512-GK9pKNxlvnU5FAdaw7i2FFuR9CqBspcE+if2tqnKXBcE0R8525wj4BZvfcwj7FjvqbssqKxRHt2nwedalbJlww==}
 
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
@@ -4408,11 +4404,6 @@ snapshots:
     dependencies:
       '@eslint/core': 0.17.0
       levn: 0.4.1
-
-  '@grpc/grpc-js@1.14.0':
-    dependencies:
-      '@grpc/proto-loader': 0.8.0
-      '@js-sdsl/ordered-map': 4.4.2
 
   '@grpc/grpc-js@1.14.1':
     dependencies:
@@ -7379,9 +7370,9 @@ snapshots:
       ipaddr.js: 2.2.0
       nice-grpc-common: 2.0.2
 
-  nice-grpc@2.1.13:
+  nice-grpc@2.1.14:
     dependencies:
-      '@grpc/grpc-js': 1.14.0
+      '@grpc/grpc-js': 1.14.1
       abort-controller-x: 0.4.3
       nice-grpc-common: 2.0.2
 
