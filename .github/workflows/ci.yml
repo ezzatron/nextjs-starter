@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload Vitest screenshots
         if: "!cancelled()"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: vitest-screenshots-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
@@ -198,7 +198,7 @@ jobs:
 
       - name: Upload build artifacts
         if: "!cancelled()"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: build-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
@@ -208,7 +208,7 @@ jobs:
 
       - name: Upload package manager files
         if: "!cancelled()"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: package-manager-files-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
@@ -220,7 +220,7 @@ jobs:
 
       - name: Upload Playwright report
         if: "!cancelled()"
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: playwright-report-${{ steps.artifact-suffix.outputs.suffix }}
           retention-days: "7"
