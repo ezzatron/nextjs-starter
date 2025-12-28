@@ -55,7 +55,7 @@ importers:
         version: 4.1.18
       ts-proto:
         specifier: ^2.8.3
-        version: 2.8.3
+        version: 2.10.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -3746,11 +3746,11 @@ packages:
   ts-poet@6.12.0:
     resolution: {integrity: sha512-xo+iRNMWqyvXpFTaOAvLPA5QAWO6TZrSUs5s4Odaya3epqofBu/fMLHEWl8jPmjhA0s9sgj9sNvF1BmaQlmQkA==}
 
-  ts-proto-descriptors@2.0.0:
-    resolution: {integrity: sha512-wHcTH3xIv11jxgkX5OyCSFfw27agpInAd6yh89hKG6zqIXnjW9SYqSER2CVQxdPj4czeOhGagNvZBEbJPy7qkw==}
+  ts-proto-descriptors@2.1.0:
+    resolution: {integrity: sha512-S5EZYEQ6L9KLFfjSRpZWDIXDV/W7tAj8uW7pLsihIxyr62EAVSiKuVPwE8iWnr849Bqa53enex1jhDUcpgquzA==}
 
-  ts-proto@2.8.3:
-    resolution: {integrity: sha512-TdXInqG+61pj/TvORqITWjvjTTsL1EZxwX49iEj89+xFAcqPT8tjChpAGQXzfcF4MJwvNiuoCEbBOKqVf3ds3g==}
+  ts-proto@2.10.0:
+    resolution: {integrity: sha512-GHzqUHCSXorbFi6Qcm5yKOApiq/EQb/+uP+7EI5L1Ze66GVljBGaEjapauRjY/LAN+uWMnii6+Kzh1OJLohiVA==}
     hasBin: true
 
   tsconfck@3.1.6:
@@ -8052,16 +8052,16 @@ snapshots:
     dependencies:
       dprint-node: 1.0.8
 
-  ts-proto-descriptors@2.0.0:
+  ts-proto-descriptors@2.1.0:
     dependencies:
       '@bufbuild/protobuf': 2.10.2
 
-  ts-proto@2.8.3:
+  ts-proto@2.10.0:
     dependencies:
       '@bufbuild/protobuf': 2.10.2
       case-anything: 2.1.13
       ts-poet: 6.12.0
-      ts-proto-descriptors: 2.0.0
+      ts-proto-descriptors: 2.1.0
 
   tsconfck@3.1.6(typescript@5.9.3):
     optionalDependencies:
