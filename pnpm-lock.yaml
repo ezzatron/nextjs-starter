@@ -64,7 +64,7 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(storybook@10.2.0(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@playwright/test':
-        specifier: ^1.57.0
+        specifier: ^1.58.0
         version: 1.58.0
       '@storybook/addon-a11y':
         specifier: ^10.1.8
@@ -106,7 +106,7 @@ importers:
         specifier: ^10.1.8
         version: 10.2.0(eslint@9.39.2(jiti@2.6.1))(storybook@10.2.0(@testing-library/dom@10.4.1)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(typescript@5.9.3)
       playwright:
-        specifier: ^1.57.0
+        specifier: ^1.58.0
         version: 1.58.0
       prettier:
         specifier: ^3.7.4
