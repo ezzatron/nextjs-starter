@@ -37,6 +37,6 @@ jobs:
         run: task install-deps
 
       - name: Publish
-        uses: chromaui/action@v13
+        uses: chromaui/action@v14
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
