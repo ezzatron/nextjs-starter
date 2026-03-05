@@ -173,7 +173,7 @@ jobs:
           labels: ${{ steps.image-meta.outputs.labels }}
 
       - name: Generate attestation
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-name: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_REPOSITORY }}
           subject-digest: ${{ steps.image-push.outputs.digest }}
