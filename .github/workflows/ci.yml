@@ -35,7 +35,7 @@ jobs:
           node-version-file: .node-version
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Install dependencies
         run: task install-deps
@@ -70,7 +70,7 @@ jobs:
           node-version-file: .node-version
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Install dependencies
         run: task install-deps
@@ -134,7 +134,7 @@ jobs:
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
 
       - name: Set up Task
-        uses: go-task/setup-task@v1
+        uses: go-task/setup-task@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
