@@ -38,6 +38,7 @@ export default defineConfig({
     },
     projects: [
       {
+        plugins: [react()],
         test: {
           name: "server",
           include: ["src/**/*.test.server.ts"],
