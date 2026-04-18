@@ -19,18 +19,19 @@ export default defineConfig([
   vitest.configs.recommended,
   storybook.configs["flat/recommended"],
   compat.config({
-    extends: [
-      "eslint:recommended",
-      "next/core-web-vitals",
-      "next/typescript",
-      "prettier",
-    ],
+    extends: ["eslint:recommended", "next/core-web-vitals", "prettier"],
   }),
   {
     languageOptions: {
+      parser: tseslint.parser,
       parserOptions: {
         projectService: true,
       },
+    },
+    rules: {
+      // Disable rules that ts-eslint already checks
+      "no-unused-vars": "off",
+      "no-undef": "off",
     },
   },
   {
