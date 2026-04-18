@@ -68,7 +68,6 @@ export default defineConfig({
           storybookTest({ configDir: join(import.meta.dirname, ".storybook") }),
         ],
         test: {
-          setupFiles: [".storybook/vitest.setup.ts"],
           browser: {
             ...browserOptions,
             instances: [{ name: "storybook", browser: "chromium" }],

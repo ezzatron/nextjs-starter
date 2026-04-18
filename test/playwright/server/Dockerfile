@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/playwright:v1.58.2
+FROM mcr.microsoft.com/playwright:v1.59.1
 
 WORKDIR /home/pwuser
 USER pwuser
 
-RUN npm install playwright@1.58.2
+RUN npm install playwright@1.59.1
 
 COPY health-check.ts ./health-check.mts
 
