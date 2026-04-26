@@ -27,8 +27,8 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(@opentelemetry/api-logs@0.211.0)(@opentelemetry/api@1.9.1)(@opentelemetry/instrumentation@0.211.0(@opentelemetry/api@1.9.1))(@opentelemetry/resources@2.5.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-logs@0.211.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-metrics@2.5.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.5.0(@opentelemetry/api@1.9.1))
       austenite:
-        specifier: ^0.13.0
-        version: 0.13.0
+        specifier: ^0.14.0
+        version: 0.14.0
       grpc-tools:
         specifier: ^1.13.1
         version: 1.13.1
@@ -1819,9 +1819,9 @@ packages:
   async@3.2.6:
     resolution: {integrity: sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==}
 
-  austenite@0.13.0:
-    resolution: {integrity: sha512-GTBjsK8hZs/lgb+9IhF39jdnqNgwkRCGf3aLg/KCimTOlaVBlQGljMIgV347xY6TCHwguNgVyxjUa/8Q9wOXWw==}
-    engines: {node: '>=18'}
+  austenite@0.14.0:
+    resolution: {integrity: sha512-URXkTlxwRo6iePmQ0vnnaulvk1N3cDA/xIVUNs4ESIUhHtoYZbSdb6OAmRUhDmfsc3rXa2IOfTm9pEO9Thr45g==}
+    engines: {node: '>=22'}
 
   available-typed-arrays@1.0.7:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
@@ -4693,6 +4693,7 @@ snapshots:
     dependencies:
       jsbi: 4.3.2
       tslib: 2.8.1
+    optional: true
 
   '@kwsites/file-exists@1.1.1':
     dependencies:
@@ -5795,14 +5796,14 @@ snapshots:
 
   async@3.2.6: {}
 
-  austenite@0.13.0:
+  austenite@0.14.0:
     dependencies:
-      '@js-temporal/polyfill': 0.4.4
       ipaddr.js: 2.3.0
       mdast-util-from-markdown: 2.0.3
       mdast-util-gfm: 3.1.0
       mdast-util-to-markdown: 2.1.2
     optionalDependencies:
+      '@js-temporal/polyfill': 0.4.4
       prettier: 3.8.3
     transitivePeerDependencies:
       - supports-color
@@ -6922,7 +6923,8 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  jsbi@4.3.2: {}
+  jsbi@4.3.2:
+    optional: true
 
   jsesc@3.1.0: {}
 
