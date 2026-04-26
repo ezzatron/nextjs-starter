@@ -17,7 +17,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vercel/otel": "^2.1.2",
-    "austenite": "^0.13.0",
+    "austenite": "^0.14.0",
     "grpc-tools": "^1.13.1",
     "next": "^15.5.15",
     "nice-grpc": "^2.1.15",
