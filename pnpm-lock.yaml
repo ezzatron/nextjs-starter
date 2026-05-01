@@ -43,7 +43,7 @@ importers:
         version: 2.0.3
       nice-grpc-opentelemetry:
         specifier: ^0.1.21
-        version: 0.1.21
+        version: 0.1.22
       react:
         specifier: ^19.2.5
         version: 19.2.5
@@ -3277,8 +3277,8 @@ packages:
   nice-grpc-common@2.0.3:
     resolution: {integrity: sha512-MEhnD3JMah0mgyivpb9hpRDbOBuXBxI/TVO+OK1h6rC97WM42HsPMR+zzRNQ0C5BqYJTw1nyWiQRD0DucO+pjQ==}
 
-  nice-grpc-opentelemetry@0.1.21:
-    resolution: {integrity: sha512-hH3yZoTIbC0M1SyXlF9aXxQGOmGEgg8XhV85L/i8oU4KZMF4cw1lQME8ow+ABO5lDCksI60p+ECFv3aW6lH5Xw==}
+  nice-grpc-opentelemetry@0.1.22:
+    resolution: {integrity: sha512-Azmn6JhkDeenXk6jag5tq7cRrp7UqIOsNVjtchmXjZp3BaSMI3E8FVk1DSaT+QjO59ftU0tqOofeE/5MixiZKw==}
 
   nice-grpc@2.1.16:
     resolution: {integrity: sha512-Cl3Pn00212Hl8/U6bpgMxmhZj5lyv3nWoJov4cd3FjWarktrMHP4DNvSjCnDwkMWYx4W1tyscEia4JX6Y4GVCQ==}
@@ -7572,7 +7572,7 @@ snapshots:
     dependencies:
       ts-error: 1.0.6
 
-  nice-grpc-opentelemetry@0.1.21:
+  nice-grpc-opentelemetry@0.1.22:
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/semantic-conventions': 1.40.0
