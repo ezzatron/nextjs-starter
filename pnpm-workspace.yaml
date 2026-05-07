@@ -1,5 +1,14 @@
 nodeLinker: hoisted
-packageManagerStrictVersion: true
+pmOnFail: error
+
+allowBuilds:
+  cpu-features: true
+  esbuild: true
+  grpc-tools: true
+  protobufjs: true
+  sharp: true
+  ssh2: true
+  unrs-resolver: true
 
 allowedDeprecatedVersions:
   # Transient dependencies via grpc-tools -> @mapbox/node-pre-gyp
@@ -10,12 +19,3 @@ allowedDeprecatedVersions:
   inflight: "1"
   npmlog: "5"
   rimraf: "3"
-
-onlyBuiltDependencies:
-  - cpu-features
-  - esbuild
-  - grpc-tools
-  - protobufjs
-  - sharp
-  - ssh2
-  - unrs-resolver
