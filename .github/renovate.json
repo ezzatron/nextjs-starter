@@ -1,6 +1,21 @@
 {
   "extends": ["github>ezzatron/renovate"],
 
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update Playwright versions in server Dockerfile",
+      "datasourceTemplate": "npm",
+      "depNameTemplate": "playwright",
+
+      "fileMatch": ["^test/playwright/server/Dockerfile$"],
+      "matchStrings": [
+        "FROM mcr\\.microsoft\\.com/playwright:v(?<currentValue>\\d+\\.\\d+\\.\\d+)",
+        "RUN npm install playwright@(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+      ]
+    }
+  ],
+
   "packageRules": [
     {
       "description": "Disable major updates for Next.js",
