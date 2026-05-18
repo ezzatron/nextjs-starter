@@ -8,7 +8,7 @@
       "datasourceTemplate": "npm",
       "depNameTemplate": "playwright",
 
-      "fileMatch": ["^test/playwright/server/Dockerfile$"],
+      "managerFilePatterns": ["/^test/playwright/server/Dockerfile$/"],
       "matchStrings": [
         "FROM mcr\\.microsoft\\.com/playwright:v(?<currentValue>\\d+\\.\\d+\\.\\d+)",
         "RUN npm install playwright@(?<currentValue>\\d+\\.\\d+\\.\\d+)"
