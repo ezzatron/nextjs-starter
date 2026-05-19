@@ -18,6 +18,13 @@
 
   "packageRules": [
     {
+      "description": "Disable dockerfile manager for Playwright server Dockerfile",
+      "matchManagers": ["dockerfile"],
+      "matchFileNames": ["test/playwright/server/Dockerfile"],
+
+      "enabled": false
+    },
+    {
       "description": "Disable major updates for Next.js",
       "matchPackageNames": [
         "@next/bundle-analyzer",
