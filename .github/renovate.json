@@ -1,5 +1,6 @@
 {
   "extends": ["github>ezzatron/renovate"],
+  "ignorePresets": [":ignoreModulesAndTests"],
 
   "customManagers": [
     {
@@ -8,10 +9,9 @@
       "datasourceTemplate": "npm",
       "depNameTemplate": "playwright",
 
-      "managerFilePatterns": ["/^test/playwright/server/Dockerfile$/"],
+      "managerFilePatterns": ["test/playwright/server/Dockerfile"],
       "matchStrings": [
-        "FROM mcr\\.microsoft\\.com/playwright:v(?<currentValue>\\d+\\.\\d+\\.\\d+)",
-        "RUN npm install playwright@(?<currentValue>\\d+\\.\\d+\\.\\d+)"
+        "playwright(?:[:@]v?)(?<currentValue>\\d+\\.\\d+\\.\\d+)\\b"
       ]
     }
   ],
