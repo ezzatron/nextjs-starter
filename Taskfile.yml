@@ -95,6 +95,7 @@ tasks:
       {{.JS_EXEC}} playwright test
       {{if .PW_TEST_HEADED}}--headed{{end}}
       {{if .PW_TEST_IGNORE_SNAPSHOTS}}--ignore-snapshots{{end}}
+      {{if .PW_TEST_UPDATE_SNAPSHOTS}}--update-snapshots{{end}}
       {{if .PW_TEST_UI}}--ui{{end}}
       {{if .PW_TEST_FORBID_ONLY}}--forbid-only{{end}}
       {{range .PW_TEST_PROJECTS}} --project="{{.}}"{{end}}
@@ -105,6 +106,18 @@ tasks:
     cmds:
       - task: test:playwright
         vars:
+          PW_TEST_PROJECTS:
+            - chromium
+            - firefox
+            - webkit
+
+  test:playwright:snapshots:
+    desc: Run Playwright tests and update snapshots
+    aliases: [playwright:snapshots]
+    cmds:
+      - task: test:playwright
+        vars:
+          PW_TEST_UPDATE_SNAPSHOTS: true
           PW_TEST_PROJECTS:
             - chromium
             - firefox
