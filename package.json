@@ -16,6 +16,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vercel/otel": "^2.1.2",
     "austenite": "^0.14.0",
     "grpc-tools": "^1.13.1",
@@ -27,7 +28,7 @@
     "react-dom": "^19.2.5",
     "tailwindcss": "^4.2.2",
     "ts-proto": "^2.11.6",
-    "typescript": "^6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.1.2",
