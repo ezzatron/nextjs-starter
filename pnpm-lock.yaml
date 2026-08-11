@@ -43,7 +43,7 @@ importers:
         version: 2.1.16
       nice-grpc-common:
         specifier: ^2.0.3
-        version: 2.0.3
+        version: 2.0.4
       nice-grpc-opentelemetry:
         specifier: ^0.1.21
         version: 0.1.22
@@ -3563,8 +3563,8 @@ packages:
       sass:
         optional: true
 
-  nice-grpc-common@2.0.3:
-    resolution: {integrity: sha512-MEhnD3JMah0mgyivpb9hpRDbOBuXBxI/TVO+OK1h6rC97WM42HsPMR+zzRNQ0C5BqYJTw1nyWiQRD0DucO+pjQ==}
+  nice-grpc-common@2.0.4:
+    resolution: {integrity: sha512-gOEXlD6ShXZMZ8k+49wm/bA2j1+3IKbEFV9WYREJcvZV4kM5L1KkILYTX9VYBzZF2OuYCe1wp8c82bQkvR0fHw==}
 
   nice-grpc-opentelemetry@0.1.22:
     resolution: {integrity: sha512-Azmn6JhkDeenXk6jag5tq7cRrp7UqIOsNVjtchmXjZp3BaSMI3E8FVk1DSaT+QjO59ftU0tqOofeE/5MixiZKw==}
@@ -8059,7 +8059,7 @@ snapshots:
       - '@babel/core'
       - babel-plugin-macros
 
-  nice-grpc-common@2.0.3:
+  nice-grpc-common@2.0.4:
     dependencies:
       ts-error: 1.0.6
 
@@ -8069,13 +8069,13 @@ snapshots:
       '@opentelemetry/semantic-conventions': 1.41.1
       abort-controller-x: 0.5.0
       ipaddr.js: 2.4.0
-      nice-grpc-common: 2.0.3
+      nice-grpc-common: 2.0.4
 
   nice-grpc@2.1.16:
     dependencies:
       '@grpc/grpc-js': 1.14.3
       abort-controller-x: 0.5.0
-      nice-grpc-common: 2.0.3
+      nice-grpc-common: 2.0.4
 
   node-exports-info@1.6.2:
     dependencies:
