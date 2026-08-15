@@ -46,7 +46,7 @@ importers:
         version: 2.0.3
       nice-grpc-opentelemetry:
         specifier: ^0.1.21
-        version: 0.1.22
+        version: 0.1.23
       react:
         specifier: ^19.2.5
         version: 19.2.7
@@ -836,10 +836,6 @@ packages:
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': '>=1.3.0 <1.10.0'
-
-  '@opentelemetry/semantic-conventions@1.41.1':
-    resolution: {integrity: sha512-/UhIkaZgPutTFmQ7RnIJGgDXZmtEJ7Dvi86xNTFWcnRxVRNk/aotsqDJYeEvDP+FSMB2SdW+pQzNMcWP0rwuNA==}
-    engines: {node: '>=14'}
 
   '@opentelemetry/semantic-conventions@1.43.0':
     resolution: {integrity: sha512-eSYWTm620tTk45EKSedaUL8MFYI8hW164hIXsgIHyxu3VobUB3fFCu5t0hQby6OoWRPsG1KkKUG2M5UadiLiVg==}
@@ -3026,6 +3022,10 @@ packages:
     resolution: {integrity: sha512-9VGk3HGanVE6JoZXHiCpnGy5X0jYDnN4EA4lntFPj+1vIWlFhIylq2CrrCOJH9EAhc5CYhq18F2Av2tgoAPsYQ==}
     engines: {node: '>= 10'}
 
+  ipaddr.js@2.5.0:
+    resolution: {integrity: sha512-aq+t5NAc+cS6rZQQVWC2x98CPqGtKKTMDd4Gaodv0wShnItdKg/51djkGJ1hqH+Oy0ivDftCbSLCQob8zso01w==}
+    engines: {node: '>= 10'}
+
   is-array-buffer@3.0.5:
     resolution: {integrity: sha512-DDfANUiiG2wC1qawP66qlTugJeL5HyzMpfr8lLK+jMQirGzNod0B12cFB/9q838Ru27sBwfw78/rdoU7RERz6A==}
     engines: {node: '>= 0.4'}
@@ -3581,8 +3581,8 @@ packages:
   nice-grpc-common@2.0.4:
     resolution: {integrity: sha512-gOEXlD6ShXZMZ8k+49wm/bA2j1+3IKbEFV9WYREJcvZV4kM5L1KkILYTX9VYBzZF2OuYCe1wp8c82bQkvR0fHw==}
 
-  nice-grpc-opentelemetry@0.1.22:
-    resolution: {integrity: sha512-Azmn6JhkDeenXk6jag5tq7cRrp7UqIOsNVjtchmXjZp3BaSMI3E8FVk1DSaT+QjO59ftU0tqOofeE/5MixiZKw==}
+  nice-grpc-opentelemetry@0.1.23:
+    resolution: {integrity: sha512-cRc/CXdZDs4Wzv2mwpGA+MUGz8o/4B07DNPPn0qqUSdNgFjSbM0Vb3F7WFBz3XU4+zqQ6ROe+/5Lq6Z2/bjikw==}
 
   nice-grpc@2.1.17:
     resolution: {integrity: sha512-pu9xYPlWSeqoYQOCqb2ftQqZi/P2DaI70PSuwnxvoyIRiilaOVtktyPe6LmuXegWB4Ic1sPuDGCnCCASbwzK0w==}
@@ -5263,8 +5263,6 @@ snapshots:
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/resources': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/semantic-conventions': 1.43.0
-
-  '@opentelemetry/semantic-conventions@1.41.1': {}
 
   '@opentelemetry/semantic-conventions@1.43.0': {}
 
@@ -7481,6 +7479,8 @@ snapshots:
 
   ipaddr.js@2.4.0: {}
 
+  ipaddr.js@2.5.0: {}
+
   is-array-buffer@3.0.5:
     dependencies:
       call-bind: 1.0.9
@@ -8125,13 +8125,13 @@ snapshots:
     dependencies:
       ts-error: 1.0.6
 
-  nice-grpc-opentelemetry@0.1.22:
+  nice-grpc-opentelemetry@0.1.23:
     dependencies:
       '@opentelemetry/api': 1.9.1
-      '@opentelemetry/semantic-conventions': 1.41.1
+      '@opentelemetry/semantic-conventions': 1.43.0
       abort-controller-x: 0.5.0
-      ipaddr.js: 2.4.0
-      nice-grpc-common: 2.0.3
+      ipaddr.js: 2.5.0
+      nice-grpc-common: 2.0.4
 
   nice-grpc@2.1.17:
     dependencies:
