@@ -2,7 +2,7 @@ name: nextjs-starter-api-mocks
 
 services:
   pet-store:
-    image: bavix/gripmock:3.18.4
+    image: bavix/gripmock:3.19.0
     volumes:
       - ../../src/api/gen:/proto:ro
       - ./stubs:/stubs:ro
