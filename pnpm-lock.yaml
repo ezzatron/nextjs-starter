@@ -43,7 +43,7 @@ importers:
         version: 2.1.17
       nice-grpc-common:
         specifier: ^2.0.3
-        version: 2.0.3
+        version: 2.0.4
       nice-grpc-opentelemetry:
         specifier: ^0.1.21
         version: 0.1.23
@@ -92,7 +92,7 @@ importers:
         version: 4.1.10(supports-color@7.2.0)(vitest@4.1.10)
       '@vitest/eslint-plugin':
         specifier: ^1.6.16
-        version: 1.6.26(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@4.1.10)
+        version: 1.6.26(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.66.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@4.1.10)
       '@vitest/ui':
         specifier: ^4.1.4
         version: 4.1.10(vitest@4.1.10)
@@ -2964,10 +2964,6 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
-  ignore@7.0.5:
-    resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
-    engines: {node: '>= 4'}
-
   ignore@7.0.6:
     resolution: {integrity: sha512-BAg6QkE8W+TuQLrrw0Ugr7HegXduRuuj8/ti2kSOc+jz1dmx8/WNcjr6XGnq5YpDWxFwwaavqD0+jIUOKelTsw==}
     engines: {node: '>= 4'}
@@ -3561,9 +3557,6 @@ packages:
         optional: true
       sass:
         optional: true
-
-  nice-grpc-common@2.0.3:
-    resolution: {integrity: sha512-MEhnD3JMah0mgyivpb9hpRDbOBuXBxI/TVO+OK1h6rC97WM42HsPMR+zzRNQ0C5BqYJTw1nyWiQRD0DucO+pjQ==}
 
   nice-grpc-common@2.0.4:
     resolution: {integrity: sha512-gOEXlD6ShXZMZ8k+49wm/bA2j1+3IKbEFV9WYREJcvZV4kM5L1KkILYTX9VYBzZF2OuYCe1wp8c82bQkvR0fHw==}
@@ -5829,6 +5822,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.66.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      '@eslint-community/regexpp': 4.12.2
+      '@typescript-eslint/parser': 8.66.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/scope-manager': 8.67.0
+      '@typescript-eslint/type-utils': 8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/utils': 8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/visitor-keys': 8.67.0
+      eslint: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
+      ignore: 7.0.6
+      natural-compare: 1.4.0
+      ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
+      typescript: '@typescript/typescript6@6.0.2'
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   '@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
@@ -5838,7 +5848,7 @@ snapshots:
       '@typescript-eslint/utils': 8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       '@typescript-eslint/visitor-keys': 8.67.0
       eslint: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
-      ignore: 7.0.5
+      ignore: 7.0.6
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
       typescript: '@typescript/typescript6@6.0.2'
@@ -6190,13 +6200,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/eslint-plugin@1.6.26(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@4.1.10)':
+  '@vitest/eslint-plugin@1.6.26(@typescript-eslint/eslint-plugin@8.67.0(@typescript-eslint/parser@8.66.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)(vitest@4.1.10)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.67.0
       '@typescript-eslint/utils': 8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       eslint: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
     optionalDependencies:
-      '@typescript-eslint/eslint-plugin': 8.67.0(@typescript-eslint/parser@8.67.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
+      '@typescript-eslint/eslint-plugin': 8.67.0(@typescript-eslint/parser@8.66.0(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0))(@typescript/typescript6@6.0.2)(eslint@9.39.5(jiti@2.7.0)(supports-color@7.2.0))(supports-color@7.2.0)
       typescript: '@typescript/typescript6@6.0.2'
       vitest: 4.1.10(@opentelemetry/api@1.9.1)(@types/node@25.9.5)(@vitest/browser-playwright@4.1.10)(@vitest/coverage-istanbul@4.1.10)(@vitest/ui@4.1.10)(vite@8.0.13(@types/node@25.9.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
     transitivePeerDependencies:
@@ -7377,8 +7387,6 @@ snapshots:
 
   ignore@5.3.2: {}
 
-  ignore@7.0.5: {}
-
   ignore@7.0.6: {}
 
   image-size@2.0.2: {}
@@ -8047,10 +8055,6 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
-
-  nice-grpc-common@2.0.3:
-    dependencies:
-      ts-error: 1.0.6
 
   nice-grpc-common@2.0.4:
     dependencies:
